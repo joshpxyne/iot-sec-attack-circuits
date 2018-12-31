@@ -1,0 +1,523 @@
+{
+    "Amazon Echo": [
+        {
+            "description": "The Amazon PAYFORT payfort-php-SDK payment gateway SDK through 2018-04-26 has XSS via an arbitrary parameter name or value that is mishandled in an error.php echo statement.", 
+            "id": "CVE-2018-19189", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "The Amazon PAYFORT payfort-php-SDK payment gateway SDK through 2018-04-26 has XSS via an arbitrary parameter name or value that is mishandled in a success.php echo statement.", 
+            "id": "CVE-2018-19187", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "** DISPUTED ** Prior to 2018-04-27, the reprompt feature in Amazon Echo devices could be misused by a custom Alexa skill. The reprompt feature is designed so that if Alexa does not receive an input within 8 seconds, the device can speak a reprompt, then wait an additional 8 seconds for input; if the user still does not respond, the microphone is then turned off. The vulnerability involves empty output-speech reprompts, custom wildcard (\"gibberish\") input slots, and logging of detected speech. If a maliciously designed skill is installed, an attacker could obtain transcripts of speech not intended for Alexa to process, but simply spoken within the device's hearing range. NOTE: The vendor states \"Customer trust is important to us and we take security and privacy seriously. We have put mitigations in place for detecting this type of skill behavior and reject or suppress those skills when we do. Customers do not need to take any action for these mitigations to work.\"", 
+            "id": "CVE-2018-11567", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Belkin WeMo": [
+        {
+            "description": "Stack-based Buffer Overflow vulnerability in libUPnPHndlr.so in Belkin Wemo Insight Smart Plug allows remote attackers to bypass local security protection via a crafted HTTP post packet.", 
+            "id": "CVE-2018-6692", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "The Belkin WeMo Home Automation firmware before 3949 has a hardcoded GPG key, which makes it easier for remote attackers to spoof firmware updates and execute arbitrary code via crafted signed data.", 
+            "id": "CVE-2013-6952", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "The Belkin WeMo Home Automation firmware before 3949 does not maintain a set of Certification Authority public keys, which allows man-in-the-middle attackers to spoof SSL servers via an arbitrary X.509 certificate.", 
+            "id": "CVE-2013-6951", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "The Belkin WeMo Home Automation firmware before 3949 does not use SSL for the distribution feed, which allows man-in-the-middle attackers to install arbitrary firmware by spoofing a distribution server.", 
+            "id": "CVE-2013-6950", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "The Belkin WeMo Home Automation firmware before 3949 does not properly use the STUN and TURN protocols, which allows remote attackers to hijack connections and possibly have unspecified other impact by leveraging access to a single WeMo device.", 
+            "id": "CVE-2013-6949", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "The peerAddresses API in the Belkin WeMo Home Automation firmware before 3949 allows remote attackers to read arbitrary files via an XML document containing an external entity declaration in conjunction with an entity reference, related to an XML External Entity (XXE) issue.", 
+            "id": "CVE-2013-6948", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Cisco IoT Field Network Director": [
+        {
+            "description": "A vulnerability in the web-based management interface of Cisco IoT Field Network Director (IoT-FND) could allow an unauthenticated, remote attacker to conduct a cross-site request forgery (CSRF) attack and alter the data of existing users and groups on an affected device. The vulnerability is due to insufficient CSRF protections for the web-based management interface on an affected device. An attacker could exploit this vulnerability by persuading a user of the interface to follow a malicious link. A successful exploit could allow the attacker to perform arbitrary actions with the privilege level of the affected user. If the user has administrative privileges, the attacker could create a new, privileged account to obtain full control over the device interface. This vulnerability affects Connected Grid Network Management System, if running a software release prior to IoT-FND Release 3.0; and IoT Field Network Director, if running a software release prior to IoT-FND Release 4.1.1-6 or 4.2.0-123. Cisco Bug IDs: CSCvi02448.", 
+            "id": "CVE-2018-0270", 
+            "inputs/outputs": []
+        }
+    ], 
+    "D-Link Baby Monitor DCS 825-L": [
+        {
+            "description": "An issue was discovered in D-Link 'myDlink Baby App' version 2.04.06. Whenever actions are performed from the app (e.g., change camera settings or play lullabies), it communicates directly with the Wi-Fi camera (D-Link 825L firmware 1.08) with the credentials (username and password) in base64 cleartext. An attacker could conduct an MitM attack on the local network and very easily obtain these credentials.", 
+            "id": "CVE-2018-18767", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "D-Link DCS-825L devices with firmware 1.08 do not employ a suitable mechanism to prevent denial-of-service (DoS) attacks. An attacker can harm the device availability (i.e., live-online video/audio streaming) by using the hping3 tool to perform an IPv4 flood attack. Verified attacks includes SYN flooding, UDP flooding, ICMP flooding, and SYN-ACK flooding.", 
+            "id": "CVE-2018-18442", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "D-Link DCS series Wi-Fi cameras expose sensitive information regarding the device configuration. The affected devices include many of DCS series, such as: DCS-936L, DCS-942L, DCS-8000LH, DCS-942LB1, DCS-5222L, DCS-825L, DCS-2630L, DCS-820L, DCS-855L, DCS-2121, DCS-5222LB1, DCS-5020L, and many more. There are many affected firmware versions starting from 1.00 and above. The configuration file can be accessed remotely through: <Camera-IP>/common/info.cgi, with no authentication. The configuration file include the following fields: model, product, brand, version, build, hw_version, nipca version, device name, location, MAC address, IP address, gateway IP address, wireless status, input/output settings, speaker, and sensor settings.", 
+            "id": "CVE-2018-18441", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "The D-Link EyeOn Baby Monitor (DCS-825L) 1.08.1 has multiple command injection vulnerabilities in the web service framework. An attacker can forge malicious HTTP requests to execute commands; authentication is required before executing the attack.", 
+            "id": "CVE-2017-11564", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "D-Link EyeOn Baby Monitor (DCS-825L) 1.08.1 has a remote code execution vulnerability. A UDP \"Discover\" service, which provides multiple functions such as changing the passwords and getting basic information, was installed on the device. A remote attacker can send a crafted UDP request to finderd to perform stack overflow and execute arbitrary code with root privilege on the device.", 
+            "id": "CVE-2017-11563", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Google Home": [
+        {
+            "description": "The API service on Google Home and Chromecast devices before mid-July 2018 does not prevent DNS rebinding attacks from reading the scan_results JSON data, which allows remote attackers to determine the physical location of most web browsers by leveraging the presence of one of these devices on its local network, extracting the scan_results bssid fields, and sending these fields in a geolocation/v1/geolocate Google Maps Geolocation API request.", 
+            "id": "CVE-2018-12716", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Gynoii Baby Monitor": [
+        {
+            "description": "Gynoii has a password of guest for the backdoor guest account and a password of 12345 for the backdoor admin account.", 
+            "id": "CVE-2015-2881", 
+            "inputs/outputs": []
+        }
+    ], 
+    "HP Inkjet": [
+        {
+            "description": "A security vulnerability has been identified with certain HP Inkjet printers. A maliciously crafted file sent to an affected device can cause a static buffer overflow, which could allow remote code execution.", 
+            "id": "CVE-2018-5925", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "A security vulnerability has been identified with certain HP Inkjet printers. A maliciously crafted file sent to an affected device can cause a stack buffer overflow, which could allow remote code execution.", 
+            "id": "CVE-2018-5924", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Hoermann BiSecur": [
+        {
+            "description": "On Hoermann BiSecur devices before 2018, a vulnerability can be exploited by recording a single radio transmission. An attacker can intercept an arbitrary radio frame exchanged between a BiSecur transmitter and a receiver to obtain the encrypted packet and the 32-bit serial number. The interception of the one-time pairing process is specifically not required. Due to use of AES-128 with an initial static random value and static data vector (all of this static information is the same across different customers' installations), the attacker can easily derive the utilized encryption key and decrypt the intercepted packet. The key can be verified by decrypting the intercepted packet and checking for known plaintext. Subsequently, an attacker can create arbitrary radio frames with the correct encryption key to control BiSecur garage and entrance gate operators and possibly other BiSecur systems as well (\"wireless cloning\"). To conduct the attack, a low cost Software Defined Radio (SDR) is sufficient. This affects Hoermann Hand Transmitter HS5-868-BS, HSE1-868-BS, and HSE2-868-BS devices.", 
+            "id": "CVE-2017-17910", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Honeywell Midas gas detector": [
+        {
+            "description": "Honeywell Midas gas detectors before 1.13b3 and Midas Black gas detectors before 2.13b3 allow remote attackers to discover cleartext passwords by sniffing the network.", 
+            "id": "CVE-2015-7908", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "Directory traversal vulnerability in the web server on Honeywell Midas gas detectors before 1.13b3 and Midas Black gas detectors before 2.13b3 allows remote attackers to bypass authentication, and write to a configuration file or trigger a calibration or test, via unspecified vectors.", 
+            "id": "CVE-2015-7907", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Insteon Hub": [
+        {
+            "description": "In version 1012 and prior of Insteon's Insteon Hub, the radio transmissions used for communication between the hub and connected devices are not encrypted.", 
+            "id": "CVE-2017-5251", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "In version 1.9.7 and prior of Insteon's Insteon for Hub Android app, the OAuth token used by the app to authorize user access is not stored in an encrypted and secure manner.", 
+            "id": "CVE-2017-5250", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Lens Peek-a-View": [
+        {
+            "description": "Lens Peek-a-View has a password of 2601hx for the backdoor admin account, a password of user for the backdoor user account, and a password of guest for the backdoor guest account.", 
+            "id": "CVE-2015-2885", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Mimo Baby 2": [
+        {
+            "description": "Mimo Baby 2 devices do not use authentication or encryption for the Bluetooth Low Energy (BLE) communication from a Turtle to a Lilypad, which allows attackers to inject fake information about the position and temperature of a baby via a replay or spoofing attack.", 
+            "id": "CVE-2018-10825", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Netatmo Indoor Module": [
+        {
+            "description": "Information disclosure vulnerability in Netatmo Indoor Module firmware 100 and earlier.", 
+            "id": "CVE-2015-1600", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Osram Lightify Pro": [
+        {
+            "description": "OSRAM SYLVANIA Osram Lightify Pro before 2016-07-26 allows attackers to obtain sensitive information by reading screenshots under /private/var/mobile/Containers/Data/Application.", 
+            "id": "CVE-2016-5059", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "OSRAM SYLVANIA Osram Lightify Pro through 2016-07-26 allows Zigbee replay.", 
+            "id": "CVE-2016-5058", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "OSRAM SYLVANIA Osram Lightify Pro through 2016-07-26 does not use SSL pinning.", 
+            "id": "CVE-2016-5057", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "OSRAM SYLVANIA Osram Lightify Pro before 2016-07-26 uses only 8 hex digits for a PSK.", 
+            "id": "CVE-2016-5056", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "OSRAM SYLVANIA Osram Lightify Pro before 2016-07-26 has XSS in the username field and Wireless Client Mode configuration page.", 
+            "id": "CVE-2016-5055", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "OSRAM SYLVANIA Osram Lightify Home through 2016-07-26 allows Zigbee replay.", 
+            "id": "CVE-2016-5054", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "OSRAM SYLVANIA Osram Lightify Home before 2016-07-26 allows remote attackers to execute arbitrary commands via TCP port 4000.", 
+            "id": "CVE-2016-5053", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "OSRAM SYLVANIA Osram Lightify Home through 2016-07-26 does not use SSL pinning.", 
+            "id": "CVE-2016-5052", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "OSRAM SYLVANIA Osram Lightify Home before 2016-07-26 stores a PSK in cleartext under /private/var/mobile/Containers/Data/Application.", 
+            "id": "CVE-2016-5051", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Papenmeier WiFi Baby Monitor ": [
+        {
+            "description": "Papenmeier WiFi Baby Monitor Free & Lite before 2.02.2 allows remote attackers to obtain audio data via certain requests to TCP ports 8258 and 8257.", 
+            "id": "CVE-2018-7661", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Philips Hue": [
+        {
+            "description": "Lack of Transport Encryption in the public API in Philips Hue Bridge BSB002 SW 1707040932 allows remote attackers to read API keys (and consequently bypass the pushlink protection mechanism, and obtain complete control of the connected accessories) by leveraging the ability to sniff HTTP traffic on the local intranet network.", 
+            "id": "CVE-2017-14797", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Philips In.Sight": [
+        {
+            "description": "Philips In.Sight B120/37 allows remote attackers to obtain sensitive information via a direct request, related to yoics.net URLs, stream.m3u8 URIs, and cam_service_enable.cgi.", 
+            "id": "CVE-2015-2884", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "Philips In.Sight B120/37 has XSS, related to the Weaved cloud web service, as demonstrated by the name parameter to deviceSettings.php or shareDevice.php.", 
+            "id": "CVE-2015-2883", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "Philips In.Sight B120/37 has a password of b120root for the backdoor root account, a password of /ADMIN/ for the backdoor admin account, a password of merlin for the backdoor mg3500 account, a password of M100-4674448 for the backdoor user account, and a password of M100-4674448 for the backdoor admin account.", 
+            "id": "CVE-2015-2882", 
+            "inputs/outputs": []
+        }
+    ], 
+    "QBee Cam": [
+        {
+            "description": "Insecure Cryptographic Storage of credentials in com.vestiacom.qbeecamera_preferences.xml in the QBee Cam application through 1.0.5 for Android allows an attacker to retrieve the username and password.", 
+            "id": "CVE-2018-16223", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Radio Thermostat CT50": [
+        {
+            "description": "The Local HTTP API in Radio Thermostat CT50 and CT80 1.04.84 and below products allows unauthorized access via a DNS rebinding attack. This can result in remote device temperature control, as demonstrated by a tstat t_heat request that accesses a device purchased in the Spring of 2018, and sets a home's target temperature to 95 degrees Fahrenheit. This vulnerability might be described as an addendum to CVE-2013-4860.", 
+            "id": "CVE-2018-11315", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "Radio Thermostat CT80 And CT50 with firmware 1.4.64 and earlier does not restrict access to the API, which allows remote attackers to change the operation mode, wifi connection settings, temperature thresholds, and other settings via unspecified vectors.", 
+            "id": "CVE-2013-4860", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Ring": [
+        {
+            "description": "Ring (formerly DoorBot) video doorbells allow remote attackers to obtain sensitive information about the wireless network configuration by pressing the set up button and leveraging an API in the GainSpan Wi-Fi module.", 
+            "id": "CVE-2015-4400", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Roku digital media player": [
+        {
+            "description": "The External Control API in Roku and Roku TV products allow unauthorized access via a DNS Rebind attack. This can result in remote device control and privileged device and network information to be exfiltrated by an attacker.", 
+            "id": "CVE-2018-11314", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Samsung SmartThings": [
+        {
+            "description": "An exploitable stack-based buffer overflow vulnerability exists in the retrieval of database fields in the video-core HTTP server of the Samsung SmartThings Hub STH-ETH-250 - Firmware version 0.20.17. The strcpy call overflows the destination buffer, which has a size of 64 bytes. An attacker can send an arbitrarily long \"bucket\" value in order to exploit this vulnerability.", 
+            "id": "CVE-2018-3915", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable stack-based buffer overflow vulnerability exists in the retrieval of database fields in the video-core HTTP server of the Samsung SmartThings Hub STH-ETH-250 - Firmware version 0.20.17. The strcpy call overflows the destination buffer, which has a size of 2000 bytes. An attacker can send an arbitrarily long \"sessionToken\" value in order to exploit this vulnerability.", 
+            "id": "CVE-2018-3914", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable stack-based buffer overflow vulnerability exists in the retrieval of database fields in the video-core HTTP server of the Samsung SmartThings Hub STH-ETH-250 - Firmware version 0.20.17. The strcpy call overflows the destination buffer, which has a size of 32 bytes. An attacker can send an arbitrarily long \"accessKey\" value in order to exploit this vulnerability.", 
+            "id": "CVE-2018-3913", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable stack-based buffer overflow vulnerability exists in the retrieval of a database field in video-core's HTTP server of Samsung SmartThings Hub. The video-core process insecurely extracts the shard.videoHostURL field from its SQLite database, leading to a buffer overflow on the stack. An attacker can send an HTTP request to trigger this vulnerability.", 
+            "id": "CVE-2018-3906", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable buffer overflow vulnerability exists in the /cameras/XXXX/clips handler of video-core's HTTP server of Samsung SmartThings Hub STH-ETH-250-Firmware version 0.20.17. The strncpy call overflows the destination buffer, which has a size of 52 bytes. An attacker can send an arbitrarily long \"startTime\" value in order to exploit this vulnerability.", 
+            "id": "CVE-2018-3894", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable buffer overflow vulnerability exists in the credentials handler of video-core's HTTP server of Samsung SmartThings Hub STH-ETH-250-Firmware version 0.20.17. The strncpy overflows the destination buffer, which has a size of 160 bytes. An attacker can send an arbitrarily long \"directory\" value in order to exploit this vulnerability.", 
+            "id": "CVE-2018-3877", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable buffer overflow vulnerability exists in the credentials handler of video-core's HTTP server of Samsung SmartThings Hub STH-ETH-250-Firmware version 0.20.17. The strncpy overflows the destination buffer, which has a size of 64 bytes. An attacker can send an arbitrarily long \"bucket\" value in order to exploit this vulnerability.", 
+            "id": "CVE-2018-3876", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable buffer overflow vulnerability exists in the credentials handler of video-core's HTTP server of Samsung SmartThings Hub STH-ETH-250-Firmware version 0.20.17. The strncpy overflows the destination buffer, which has a size of 32 bytes. An attacker can send an arbitrarily long \"accessKey\" value in order to exploit this vulnerability.", 
+            "id": "CVE-2018-3874", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable buffer overflow vulnerability exists in the credentials handler of video-core's HTTP server of Samsung SmartThings Hub STH-ETH-250-Firmware version 0.20.17. The strncpy overflows the destination buffer, which has a size of 128 bytes. An attacker can send an arbitrarily long \"secretKey\" value in order to exploit this vulnerability.", 
+            "id": "CVE-2018-3873", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable buffer overflow vulnerability exists in the Samsung WifiScan handler of video-core's HTTP server of Samsung SmartThings Hub STH-ETH-250 - Firmware version 0.20.17. The strcpy overflows the destination buffer, which has a size of 40 bytes. An attacker can send an arbitrarily long \"cameraIp\" value in order to exploit this vulnerability.", 
+            "id": "CVE-2018-3865", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable buffer overflow vulnerability exists in the Samsung WifiScan handler of video-core's HTTP server of Samsung SmartThings Hub STH-ETH-250 - Firmware version 0.20.17. The strcpy overflows the destination buffer, which has a size of 40 bytes. An attacker can send an arbitrarily long \"password\" value in order to exploit this vulnerability.", 
+            "id": "CVE-2018-3864", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable buffer overflow vulnerability exists in the credentials handler of video-core's HTTP server of Samsung SmartThings Hub STH-ETH-250-Firmware version 0.20.17. The video-core process incorrectly extracts fields from a user-controlled JSON payload, leading to a buffer overflow on the stack. The strncpy overflows the destination buffer, which has a size of 2,000 bytes. An attacker can send an arbitrarily long \"sessionToken\" value in order to exploit this vulnerability.", 
+            "id": "CVE-2018-3875", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable buffer overflow vulnerabilities exist in the /cameras/XXXX/clips handler of video-core's HTTP server of Samsung SmartThings Hub with Firmware version 0.20.17. The video-core process incorrectly extracts fields from a user-controlled JSON payload, leading to a buffer overflow on the stack. The strncpy call overflows the destination buffer, which has a size of 52 bytes. An attacker can send an arbitrarily long \"callbackUrl\" value in order to exploit this vulnerability.", 
+            "id": "CVE-2018-3897", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable buffer overflow vulnerabilities exist in the /cameras/XXXX/clips handler of video-core's HTTP server of Samsung SmartThings Hub with Firmware version 0.20.17. The video-core process incorrectly extracts fields from a user-controlled JSON payload, leading to a buffer overflow on the stack. The strncpy call overflows the destination buffer, which has a size of 52 bytes. An attacker can send an arbitrarily long \"correlationId\" value in order to exploit this vulnerability.", 
+            "id": "CVE-2018-3896", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable stack-based buffer overflow vulnerability exists in the retrieval of database fields in the video-core HTTP server of the Samsung SmartThings Hub STH-ETH-250 - Firmware version 0.20.17. The strcpy call overflows the destination buffer, which has a size of 136 bytes. An attacker can send an arbitrarily long 'directory' value in order to exploit this vulnerability. An attacker can send an HTTP request to trigger this vulnerability.", 
+            "id": "CVE-2018-3916", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable vulnerability exists in the REST parser of video-core's HTTP server of the Samsung SmartThings Hub STH-ETH-250-Firmware version 0.20.17. The video-core process incorrectly handles pipelined HTTP requests, which allows successive requests to overwrite the previously parsed HTTP method, URL and body. With the implementation of the on_body callback, defined by sub_41734, an attacker can send an HTTP request to trigger this vulnerability.", 
+            "id": "CVE-2018-3908", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable buffer overflow vulnerability exists in the /cameras/XXXX/clips handler of video-core's HTTP server of Samsung SmartThings Hub STH-ETH-250 Firmware version 0.20.17. The strncpy call overflows the destination buffer, which has a size of 52 bytes. An attacker can send an arbitrarily long 'endTime' value in order to exploit this vulnerability. An attacker can send an HTTP request to trigger this vulnerability.", 
+            "id": "CVE-2018-3895", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable integer underflow vulnerability exists in the ZigBee firmware update routine of the hubCore binary of the Samsung SmartThings Hub STH-ETH-250 - Firmware version 0.20.17. The hubCore process incorrectly handles malformed files existing in its data directory, leading to an infinite loop, which eventually causes the process to crash. An attacker can send an HTTP request to trigger this vulnerability.", 
+            "id": "CVE-2018-3926", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable information disclosure vulnerability exists in the crash handler of the hubCore binary of the Samsung SmartThings Hub STH-ETH-250 - Firmware version 0.20.17. When hubCore crashes, Google Breakpad is used to record minidumps, which are sent over an insecure HTTPS connection to the backtrace.io service, leading to the exposure of sensitive data. An attacker can impersonate the remote backtrace.io server in order to trigger this vulnerability.", 
+            "id": "CVE-2018-3927", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "An exploitable vulnerability exists in the remote servers of Samsung SmartThings Hub STH-ETH-250 - Firmware version 0.20.17. The hubCore process listens on port 39500 and relays any unauthenticated messages to SmartThings' remote servers, which incorrectly handle camera IDs for the 'sync' operation, leading to arbitrary deletion of cameras. An attacker can send an HTTP request to trigger this vulnerability.", 
+            "id": "CVE-2018-3918", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Sonos Speaker": [
+        {
+            "description": "The UPnP HTTP server on Sonos wireless speaker products allow unauthorized access via a DNS rebinding attack. This can result in remote device control and privileged device and network information to be exfiltrated by an attacker.", 
+            "id": "CVE-2018-11316", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Summer Baby Zoom Wifi Monitor": [
+        {
+            "description": "Summer Baby Zoom Wifi Monitor & Internet Viewing System allows remote attackers to gain privileges via manual entry of a Settings URL.", 
+            "id": "CVE-2015-2889", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "Summer Baby Zoom Wifi Monitor & Internet Viewing System allows remote attackers to bypass authentication, related to the MySnapCam web service.", 
+            "id": "CVE-2015-2888", 
+            "inputs/outputs": []
+        }
+    ], 
+    "TRENDnet WiFi Baby Cam": [
+        {
+            "description": "TRENDnet WiFi Baby Cam TV-IP743SIC has a password of admin for the backdoor root account.", 
+            "id": "CVE-2015-2880", 
+            "inputs/outputs": []
+        }
+    ], 
+    "TrackR Bravo": [
+        {
+            "description": "TrackR Bravo device allows unauthenticated pairing, which enables unauthenticated connected applications to write to various device attributes. Updated apps, version 5.1.6 for iOS and 2.2.5 for Android, have been released by the vendor to address the vulnerabilities in CVE-2016-6538, CVE-2016-6539, CVE-2016-6540 and CVE-2016-6541.", 
+            "id": "CVE-2016-6541", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "Unauthenticated access to the cloud-based service maintained by TrackR Bravo is allowed for querying or sending GPS data for any Trackr device by using the tracker ID number which can be discovered as described in CVE-2016-6539. Updated apps, version 5.1.6 for iOS and 2.2.5 for Android, have been released by the vendor to address the vulnerabilities in CVE-2016-6538, CVE-2016-6539, CVE-2016-6540 and CVE-2016-6541.", 
+            "id": "CVE-2016-6540", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "The Trackr device ID is constructed of a manufacturer identifier of four zeroes followed by the BLE MAC address in reverse. The MAC address can be obtained by being in close proximity to the Bluetooth device, effectively exposing the device ID. The ID can be used to track devices. Updated apps, version 5.1.6 for iOS and 2.2.5 for Android, have been released by the vendor to address the vulnerabilities in CVE-2016-6538, CVE-2016-6539, CVE-2016-6540 and CVE-2016-6541.", 
+            "id": "CVE-2016-6539", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "The TrackR Bravo mobile app stores the account password used to authenticate to the cloud API in cleartext in the cache.db file. Updated apps, version 5.1.6 for iOS and 2.2.5 for Android, have been released by the vendor to address the vulnerabilities in CVE-2016-6538, CVE-2016-6539, CVE-2016-6540 and CVE-2016-6541.", 
+            "id": "CVE-2016-6538", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Wink Smarthome": [
+        {
+            "description": "In version 6.1.0.19 and prior of Wink Labs's Wink - Smart Home Android app, the OAuth token used by the app to authorize user access is not stored in an encrypted and secure manner.", 
+            "id": "CVE-2017-5249", 
+            "inputs/outputs": []
+        }
+    ], 
+    "Zipato Zipabox Smart Home Controller": [
+        {
+            "description": "Sensitive Information Disclosure in Zipato Zipabox Smart Home Controller allows remote attacker get sensitive information that expands attack surface.", 
+            "id": "CVE-2018-15125", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "Weak hashing algorithm in Zipato Zipabox Smart Home Controller BOARD REV - 1 with System Version -118 allows unauthenticated attacker extract clear text passwords and get root access on the device.", 
+            "id": "CVE-2018-15124", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "Insecure configuration storage in Zipato Zipabox Smart Home Controller BOARD REV - 1 with System Version -118 allows remote attacker perform new attack vectors and take under control device and smart home.", 
+            "id": "CVE-2018-15123", 
+            "inputs/outputs": []
+        }
+    ], 
+    "iBaby M3S": [
+        {
+            "description": "iBaby M3S has a password of admin for the backdoor admin account.", 
+            "id": "CVE-2015-2887", 
+            "inputs/outputs": []
+        }
+    ], 
+    "iBaby M6": [
+        {
+            "description": "iBaby M6 allows remote attackers to obtain sensitive information, related to the ibabycloud.com service.", 
+            "id": "CVE-2015-2886", 
+            "inputs/outputs": []
+        }
+    ], 
+    "iSmartAlarm CubeOne": [
+        {
+            "description": "iSmartAlarm cube devices allow Denial of Service. Sending a SYN flood on port 12345 will freeze the \"cube\" and it will stop responding.", 
+            "id": "CVE-2017-7730", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "On iSmartAlarm cube devices, there is Incorrect Access Control because a \"new key\" is transmitted in cleartext.", 
+            "id": "CVE-2017-7729", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "On iSmartAlarm cube devices, there is authentication bypass leading to remote execution of commands (e.g., setting the alarm on/off), related to incorrect cryptography.", 
+            "id": "CVE-2017-7728", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "iSmartAlarm cube devices have an SSL Certificate Validation Vulnerability.", 
+            "id": "CVE-2017-7726", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "Password file exposure in firmware in iSmartAlarm CubeOne version 2.2.4.8 and earlier allows attackers to execute arbitrary commands with administrative privileges by retrieving credentials from this file.", 
+            "id": "CVE-2017-13664", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "Encryption key exposure in firmware in iSmartAlarm CubeOne version 2.2.4.8 and earlier allows attackers to decrypt log files via an exposed key.", 
+            "id": "CVE-2017-13663", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "Cleartext Storage of credentials in the iSmartAlarmData.xml configuration file in the iSmartAlarm application through 2.0.8 for Android allows an attacker to retrieve the username and password.", 
+            "id": "CVE-2018-16222", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "Incorrect access control for the diagnostic files of the iSmartAlarm Cube One through 2.2.4.10 allows an attacker to retrieve them via a specifically crafted TCP request to port 12345 and 22306, and access sensitive information from the device.", 
+            "id": "CVE-2018-16224", 
+            "inputs/outputs": []
+        }
+    ], 
+    "iTrack Easy": [
+        {
+            "description": "getgps data in iTrack Easy can be modified without authentication by setting the data using the parametercmd:setothergps. This vulnerability can be exploited to alter the GPS data of a lost device.", 
+            "id": "CVE-2016-6544", 
+            "inputs/outputs": []
+        }, 
+        {
+            "description": "A captured MAC/device ID of an iTrack Easy can be registered under multiple user accounts allowing access to getgps GPS data, which can allow unauthenticated parties to track the device.", 
+            "id": "CVE-2016-6543", 
+            "inputs/outputs": []
+        }
+    ], 
+    "uControl Smart Home Automation": [
+        {
+            "description": "The uControl Smart Home Automation (aka de.ucontrol) application 1.2 for Android does not verify X.509 certificates from SSL servers, which allows man-in-the-middle attackers to spoof servers and obtain sensitive information via a crafted certificate.", 
+            "id": "CVE-2014-4892", 
+            "inputs/outputs": []
+        }
+    ]
+}

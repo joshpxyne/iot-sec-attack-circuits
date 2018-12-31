@@ -1,0 +1,262 @@
+[
+{
+    "device": "HP Inkjet",
+    "comment": "there are many more printers we could use.",
+    "CVE_IDs": [
+        "CVE-2018-5925",
+        "CVE-2018-5924"
+    ]
+},
+{
+    "device": "QBee Cam",
+    "CVE_IDs": [
+        "CVE-2018-16223"
+    ]
+},
+{
+    "device": "iSmartAlarm CubeOne",
+    "CVE_IDs": [
+        "CVE-2017-7730",
+        "CVE-2017-7729",
+        "CVE-2017-7728",
+        "CVE-2017-7726",
+        "CVE-2017-13664",
+        "CVE-2017-13663",
+        "CVE-2018-16222",
+        "CVE-2018-16224"
+    ]
+},
+{
+    "device": "iTrack Easy",
+    "CVE_IDs": [
+        "CVE-2016-6544",
+        "CVE-2016-6543"
+    ]
+},
+{
+    "device": "Hoermann BiSecur",
+    "CVE_IDs": [
+        "CVE-2017-17910"
+    ]
+},
+{
+    "device": "Zipato Zipabox Smart Home Controller",
+    "CVE_IDs": [
+        "CVE-2018-15125",
+        "CVE-2018-15124",
+        "CVE-2018-15123"
+    ]
+},
+{
+    "device": "TrackR Bravo",
+    "CVE_IDs": [
+        "CVE-2016-6541",
+        "CVE-2016-6540",
+        "CVE-2016-6539",
+        "CVE-2016-6538"
+    ]
+},
+{
+    "device": "Wink Smarthome",
+    "CVE_IDs": [
+        "CVE-2017-5249"
+    ]
+},
+{
+    "device": "Insteon Hub",
+    "CVE_IDs": [
+        "CVE-2017-5251",
+        "CVE-2017-5250"
+
+    ]
+},
+{
+    "device": "Radio Thermostat CT50",
+    "CVE_IDs": [
+       "CVE-2018-11315",
+       "CVE-2013-4860"
+    ]
+},
+{
+    "device": "Roku digital media player",
+    "CVE_IDs": [
+        "CVE-2018-11314"
+    ]
+},
+{
+    "device": "Sonos Speaker",
+    "CVE_IDs": [
+        "CVE-2018-11316"
+    ]
+},
+{
+    "device": "Samsung SmartThings",
+    "CVE_IDs": [
+        "CVE-2018-3915",
+        "CVE-2018-3914",
+        "CVE-2018-3913",
+        "CVE-2018-3906",
+        "CVE-2018-3894",
+        "CVE-2018-3877",
+        "CVE-2018-3876",
+        "CVE-2018-3874",
+        "CVE-2018-3873",
+        "CVE-2018-3865",
+        "CVE-2018-3864",
+        "CVE-2018-3875",
+        "CVE-2018-3897",
+        "CVE-2018-3896",
+        "CVE-2018-3916",
+        "CVE-2018-3908",
+        "CVE-2018-3895",
+        "CVE-2018-3926",
+        "CVE-2018-3927",
+        "CVE-2018-3918"
+
+    ]
+},
+{
+    "device": "Philips Hue",
+    "CVE_IDs": [
+        "CVE-2017-14797"
+    ]
+},
+{
+    "device": "uControl Smart Home Automation",
+    "CVE_IDs": [
+        "CVE-2014-4892"
+    ]
+},
+{
+    "device": "Osram Lightify Pro",
+    "CVE_IDs": [
+        "CVE-2016-5059",
+        "CVE-2016-5058",
+        "CVE-2016-5057",
+        "CVE-2016-5056",
+        "CVE-2016-5055",
+        "CVE-2016-5054",
+        "CVE-2016-5053",
+        "CVE-2016-5052",
+        "CVE-2016-5051"
+
+    ]
+},
+{
+    "device": "Google Home",
+    "CVE_IDs": [
+        "CVE-2018-12716"
+    ]
+},
+{
+    "device": "Netatmo Indoor Module",
+    "CVE_IDs": [
+        "CVE-2015-1600"
+    ]
+},
+{
+    "device": "Honeywell Midas gas detector",
+    "CVE_IDs": [
+        "CVE-2015-7908",
+        "CVE-2015-7907"
+    ]
+},
+{
+    "device": "Cisco IoT Field Network Director",
+    "CVE_IDs": [
+        "CVE-2018-0270"
+    ]
+},
+{
+    "device": "TRENDnet WiFi Baby Cam",
+    "CVE_IDs": [
+        "CVE-2015-2880"
+    ]
+},
+{
+    "device": "Gynoii Baby Monitor",
+    "CVE_IDs": [
+        "CVE-2015-2881"
+    ]
+},
+{
+    "device": "Philips In.Sight",
+    "CVE_IDs": [
+        "CVE-2015-2884",
+        "CVE-2015-2883",
+        "CVE-2015-2882"
+    ]
+},
+{
+    "device": "Lens Peek-a-View",
+    "CVE_IDs": [
+        "CVE-2015-2885"
+    ]
+},
+{
+    "device": "iBaby M6",
+    "CVE_IDs": [
+        "CVE-2015-2886"
+    ]
+},
+{
+    "device": "iBaby M3S",
+    "CVE_IDs": [
+        "CVE-2015-2887"
+    ]
+},
+{
+    "device": "Summer Baby Zoom Wifi Monitor",
+    "CVE_IDs": [
+        "CVE-2015-2889",
+        "CVE-2015-2888"
+    ]
+},
+{
+    "device": "Papenmeier WiFi Baby Monitor ",
+    "CVE_IDs": [
+        "CVE-2018-7661"
+    ]
+},
+{
+    "device": "Mimo Baby 2",
+    "CVE_IDs": [
+        "CVE-2018-10825"
+    ]
+},
+{
+    "device": "D-Link Baby Monitor DCS 825-L",
+    "CVE_IDs": [
+        "CVE-2018-18767",
+        "CVE-2018-18442",
+        "CVE-2018-18441",
+        "CVE-2017-11564",
+        "CVE-2017-11563"
+    ]
+},
+{
+    "device":"Amazon Echo",
+    "CVE_IDs": [
+        "CVE-2018-19189",
+        "CVE-2018-19187",
+        "CVE-2018-11567"
+    ]
+},
+{
+    "device": "Ring",
+    "CVE_IDs": [
+        "CVE-2015-4400"
+    ]
+},
+{
+    "device": "Belkin WeMo",
+    "CVE_IDs": [
+        "CVE-2018-6692",
+        "CVE-2013-6952",
+        "CVE-2013-6951",
+        "CVE-2013-6950",
+        "CVE-2013-6949",
+        "CVE-2013-6948"
+    ]
+}
+]

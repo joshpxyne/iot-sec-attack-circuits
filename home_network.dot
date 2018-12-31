@@ -1,0 +1,20 @@
+/*****
+Home Network
+*****/
+
+graph G {
+  graph [splines=true overlap=false]
+  node  [shape=ellipse, width=0.3, height=0.3]
+  1 [label="Router"];
+  2 [label="Amazon Echo"];
+  3 [label="Google Home"];
+  4 [label="Belkin WeMo"];
+  5 [label="D-Link Baby Monitor DCS 825-L"];
+  6 [label="HP Inkjet"];
+  1 -- 2;
+  1 -- 3;
+  1 -- 4;
+  1 -- 5;
+  1 -- 6;
+  label = "\nHome Network\n";  fontsize=24;
+}

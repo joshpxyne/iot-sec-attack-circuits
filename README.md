@@ -1,5 +1,5 @@
 # iot-sec-attack-circuits
-Be sure to download the CVE json from years 2013-2019 into a folder called cve-data. Name these 2013.json, ..., 2019.json.
+Be sure to download the CVE json from years 2013-2019 into a folder called cve-data. Name these 2013.json,...,2019.json.
 
 This repository seeks to build attack circuits and home IoT network maps. 
 

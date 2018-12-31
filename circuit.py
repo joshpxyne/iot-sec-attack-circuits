@@ -10,6 +10,7 @@ import itertools
 import matplotlib.pyplot as plt
 from optparse import OptionParser
 
+### Things the attacker might be aiming to get. ###
 attacker_stash = ["Privacy Breach","this:Root Privileges","this:GPG Key","Credentials","this:Availability","this:Config File","Google Account Access","Physical Location","Privacy Breach"]
 
 '''

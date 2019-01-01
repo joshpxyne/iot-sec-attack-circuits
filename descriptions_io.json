@@ -1,12 +1,14 @@
 {
     "Router": [
         {
-            "description": "Non-CVE I/O", 
+            "description": "Non-CVE I/O",
+            "id": "Non-CVE info: Router",  
             "i/o": ["Vulnerability->MITM","Vulnerability->DoS Attack","Vulnerability->this:Buffer Overflow","General Use->XSS","General Use->Unprotected Expose","General Use->DNS Rebinding Attack"]
         }
     ],
     "Amazon Echo": [
         {
+            "id": "Non-CVE info: Amazon Echo",  
             "description": "Non-CVE I/O",
             "i/o": ["Credentials->this:Root Privileges"]
         },
@@ -94,6 +96,7 @@
     ], 
     "Google Home": [
         {
+            "id": "Non-CVE info: Google Home",  
             "description": "Non-CVE I/O",
             "i/o": ["Credentials->Google Account Access"]
         },
@@ -112,6 +115,7 @@
     ], 
     "HP Inkjet": [
         {
+            "id": "Non-CVE info: HP Inkjet",  
             "description": "Non-CVE I/O",
             "i/o": ["this:Root Privileges->Privacy Breach"]
         },

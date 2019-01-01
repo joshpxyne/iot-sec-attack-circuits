@@ -3,8 +3,8 @@ import json
 import random
 import networkx as nx
 from networkx.drawing.nx_agraph import graphviz_layout
-import pydot
 import snap
+import pydot
 import collections
 import itertools
 import matplotlib.pyplot as plt
@@ -42,99 +42,91 @@ def buildVector(device_search):
     return vector
 
 '''
-A circuit is a fully connected, directed graph with vertices being circuit elements/IoT devices, and 
+A circuit is a fully connected, directed graph with subgraphs being circuit elements/IoT devices, vertices being CVEs, and 
 an edge (v_1,v_2) is 'red' if there exists a match between the output of one vertex v_1 
-(circuit element/IoT device) and the input of another vertex v_2 in the graph. The path consisting
+(CVE) and the input of another vertex v_2 in the graph. The path consisting
 of red edges from one vertex v_m and another vertex v_n is called an attack path.
 
 Here, we use a brute force approach to generate all possible paths, but as vulnerability information
 and system complexity increases, an AI planning or other intelligent approach may be needed.
 ''' 
 
-def find_shortest_path(graph, start, end, path=[]):
-    path = path + [start]
-    if start == end:
-        return path
-    if start not in graph:
-        return None
-    shortest = None
-    for node in graph[start]:
-        if node not in path:
-            newpath = find_shortest_path(graph, node, end, path)
-            if newpath:
-                if not shortest or len(newpath) < len(shortest):
-                    shortest = newpath
-    return shortest
+def buildCircuit(devices):
 
-def buildCircuit(devices,vectors):
-    ### add circuit elements ###
+    ### set up circuit ###
+
+    dotstr = '/*****\nAttack Circuit\n*****/\n\ndigraph G {\n  graph [splines=true overlap=false]\n  node  [shape=ellipse, width=0.3, height=0.3]\n' #  size="30,30";\n ratio="fill"
     attack_circuit = {}
-    circuit = snap.TNEANet.New()
-    labels = snap.TIntStrH()
-    dev_ind = 0
-    ### add all nodes (devices) ###
     G = nx.MultiDiGraph()
     edge_labels = {}
-    dotstr = "/*****\nAttack Circuit\n*****/\n\ndigraph G {\n  graph [splines=true overlap=false]\n  node  [shape=ellipse, width=0.3, height=0.3]\n"
+    dev_ind = cve_ind = 0
+
+    ### add attacker vertex ###
+    
     G.add_node("Attacker")
-    dotstr += "  " + str(dev_ind) + ' [label="Attacker"];\n'
-    router_ind = 0
+    dotstr += "  " + str(dev_ind) + ' [label="Attacker", shape=Mdiamond];\n'
+    
     with open("descriptions_io.json") as desc:
         io_desc = json.load(desc)
+        dotstr += '  0 -> 1 [label="Some router/network vulnerability"];\n'
+        dotmap = {}
+
+         ### add all vertices (devices) ###
+
         for device in devices:
             dev_ind+=1
-            if device=="Router":
-                router_ind = dev_ind
-            G.add_node(device)
-            attack_circuit[device] = {}
-            attack_circuit[device]["inputs"] = []
-            attack_circuit[device]["outputs"] = []
+            dotstr += "  subgraph cluster_" + str(dev_ind) + ' {\n  label="'+device+'";'
             for cve in io_desc[device]:
+                cve_ind+=1
+                dotmap[cve["id"]] = cve_ind
+                G.add_node(cve["id"])
+                attack_circuit[cve["id"]] = {}
+                attack_circuit[cve["id"]]["inputs"] = []
+                attack_circuit[cve["id"]]["outputs"] = []
                 for io in cve["i/o"]:
+                    attack_circuit[cve["id"]]["inputs"].append(io.split('->')[0])
                     if cve["description"]!="Non-CVE I/O":
-                        attack_circuit[device]["outputs"].append(io.split('->')[1]+r"\n"+cve["id"])
+                        attack_circuit[cve["id"]]["outputs"].append(io.split('->')[1])
                     else:
-                        attack_circuit[device]["outputs"].append(io.split('->')[1])
-                    attack_circuit[device]["inputs"].append(io.split('->')[0])
-                    # print(device,"input",io.split('->')[0],"output",io.split('->')[1])
-            circuit.AddNode(dev_ind)
-            dotstr += "  " + str(dev_ind) + ' [label="' + device + '"];\n'
-            labels.AddDat(dev_ind, str(device))
-        dotstr += "  0 -> "+ str(router_ind) + ' [label="Some router/network vulnerability"];\n'
-        ### add all edges ###        
-        dev_x_ind = 1
+                        attack_circuit[cve["id"]]["outputs"].append(io.split('->')[1])
+                dotstr += "    " + str(cve_ind) + ' [label="' + cve["id"] + '"];\n'
+            dotstr += "  }\n"
+
+        ### add all device edges ###       
+        
         for dev_x in devices:
-            dev_y_ind = 1
-            for dev_y in devices:
-                ### loop thru inputs, outputs of the two devices. Currently, if they match.
-                for dev_x_output in attack_circuit[dev_x]["outputs"]:
-                    for dev_y_input in attack_circuit[dev_y]["inputs"]:
-                        if dev_x_output.split(r"\n")[0]==dev_y_input:
-                            circuit.AddEdge(dev_x_ind,dev_y_ind) # output to input
-                            G.add_edge(dev_x,dev_y)
-                            edge_labels[(dev_x,dev_y)] = dev_x_output
-                            dotstr += "  " + str(dev_x_ind) + " -> " + str(dev_y_ind) + ' [label="' + dev_x_output + '"];\n'
-                dev_y_ind+=1
-            dev_x_ind+=1
-        dev_x_ind = 1
+            for dev_y in devices: # loop thru inputs, outputs of the two CVEs. Currently, add edge if i/o matches.
+                for cve_dev_x in io_desc[dev_x]:
+                    for cve_dev_y in io_desc[dev_y]: 
+                        for cve_x_output in attack_circuit[cve_dev_x["id"]]["outputs"]:
+                            for cve_y_input in attack_circuit[cve_dev_y["id"]]["inputs"]:
+                                if cve_x_output==cve_y_input:
+                                    G.add_edge(cve_dev_x["id"],cve_dev_y["id"])
+                                    edge_labels[(cve_dev_x["id"],cve_dev_y["id"])] = cve_x_output
+                                    dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '"];\n'
+        
+        ### add all attacker edges ###
+
         for dev_x in devices:
-            for dev_x_output in attack_circuit[dev_x]["outputs"]:
-                if dev_x_output.split(r"\n")[0] in attacker_stash:
-                    dotstr += "  " + str(dev_x_ind) + " -> 0" + ' [label="' + dev_x_output + '"];\n'
-            dev_x_ind += 1
+            for cve_dev_x in io_desc[dev_x]:
+                for cve_x_output in attack_circuit[cve_dev_x["id"]]["outputs"]:
+                    if cve_x_output.split(r"\n")[0] in attacker_stash:
+                        dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '"];\n'
+
         ### build attack paths ###
-        dotstr += r'  label = "\nAttack Circuit\n";  fontsize=24;'
-        dotstr += '\n}'
+
+        dotstr += r'  label = "\nAttack Circuit\n";  fontsize=24;' + '\n}'
         paths = {}
         for dev_x in devices:
             for dev_y in devices:
-                if dev_x!="Attacker" and dev_y!="Attacker":
-                    try:
-                        paths[str(dev_x)+","+str(dev_y)] = nx.shortest_path(G, source=dev_x, target=dev_y)
-                    except:
-                        paths[str(dev_x)+","+str(dev_y)] = "None"
+                for cve_dev_x in io_desc[dev_x]:
+                    for cve_dev_y in io_desc[dev_y]: 
+                        try:
+                            paths[str(cve_dev_x["id"])+","+str(cve_dev_y["id"])] = nx.shortest_path(G, source=cve_dev_x["id"], target=cve_dev_y["id"])
+                        except:
+                            paths[str(cve_dev_x["id"])+","+str(cve_dev_y["id"])] = "None"
         print ("All paths: ",paths)
-    return circuit, labels, paths, G, edge_labels, dotstr
+    return paths, G, edge_labels, dotstr
 
 '''
 A network is an undirected graph with maximum diameter = 2 where vertices are IoT devices in a 
@@ -153,26 +145,29 @@ def buildNetwork(devices):
         vectors[device] = vector
         home_network.AddNode(dev_ind)
         if dev_ind!=1:
-            home_network.AddEdge(dev_ind, 1) ### assuming Router is the first device in the argument
+            home_network.AddEdge(dev_ind, 1) # assuming Router is the first device in the argument
         labels.AddDat(dev_ind, str(device))
     return home_network, labels, vectors
 
 if __name__ == "__main__":
-    attack_circuit = []
     parser = OptionParser()
-    parser.add_option("-d", "--devices", dest="devices",
-                    help="input device")
+    parser.add_option("-d", "--devices", dest="devices",help="input device")
     (options, args) = parser.parse_args()
     devices = options.devices.split(',')
+
+     ### build ###
+
     home_network, network_labels, vectors = buildNetwork(devices)
-    circuit, circuit_labels, paths, G, edge_labels, dotstr = buildCircuit(devices,vectors)
+    paths, G, edge_labels, dotstr = buildCircuit(devices)
+
+    ### draw/save ###
     snap.DrawGViz(home_network, snap.gvlDot, "home_network.png", "Home Network", network_labels)
-    # snap.DrawGViz(circuit, snap.gvlDot, "circuit.png", "Attack Circuit", circuit_labels)
     dotfile = open("circuit.dot", "w")
     dotfile.write(dotstr)
     dotfile.close()
     (graph,) = pydot.graph_from_dot_file('circuit.dot')
     graph.write_png('circuit.png')
+
     # nx_node_labels = nx.draw_networkx_labels(G,pos=graphviz_layout(G, prog='dot'))
     # nx_edge_labels = nx.draw_networkx_edge_labels(G,pos=graphviz_layout(G, prog='dot'),edge_labels=edge_labels,font_color='red') 
     # nx.draw(G, pos=graphviz_layout(G, prog='dot'),node_size=1600,node_color=range(len(G)))

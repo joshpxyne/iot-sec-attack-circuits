@@ -29,7 +29,6 @@ def colorVertex(value):
         return 'red3'
     return 'purple4'
 
-
 '''
 A vector is a list of information about the vulnerabilities of a device, based on its corresponding
 CVE score.
@@ -151,11 +150,11 @@ def buildCircuit(devices,vector):
                                             
                                     edge_labels[(cve_dev_x["id"],cve_dev_y["id"])] = cve_x_output
                                     try:
-                                        schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["base"]) + '"];\n'
+                                        schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="black"];\n'
                                         impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
                                         exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["exploitability"]) + '"];\n'
                                     except:
-                                        schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
+                                        schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="black"];\n'
                                         impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
                                         exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
 
@@ -167,21 +166,21 @@ def buildCircuit(devices,vector):
                     ImpactGraph.add_edge(cve_dev_x["id"],"Attacker",capacity=100000.0)
                     ExploitabilityGraph.add_edge(cve_dev_x["id"],"Attacker",capacity=100000.0)
                 try:
-                    schematic_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["base"]) + '"];\n'
+                    schematic_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="black"];\n'
                     impact_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
                     exploitability_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["exploitability"]) + '"];\n'
                 except: # sometimes CVE doesn't have a CVSS score
-                    schematic_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="' + colorVertex(3.0) + '"];\n'
+                    schematic_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="black"];\n'
                     impact_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="' + colorVertex(3.0) + '"];\n'
                     exploitability_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="' + colorVertex(3.0) + '"];\n'
                 for cve_x_output in attack_circuit[cve_dev_x["id"]]["outputs"]:
                     if cve_x_output.split(r"\n")[0] in attacker_stash:
                         try:
-                            schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["base"]) + '"];\n'
+                            schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="black"];\n'
                             impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
                             exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["exploitability"]) + '"];\n'
                         except: # sometimes CVE doesn't have a CVSS score
-                            schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
+                            schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="black"];\n'
                             impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
                             exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
 
@@ -201,7 +200,7 @@ def buildCircuit(devices,vector):
                         except:
                             paths[str(cve_dev_x["id"])+","+str(cve_dev_y["id"])] = "None"
 
-        # print ("All paths: ",paths)
+        print ("All paths: ",paths)
     return paths, SchematicGraph, ImpactGraph, ExploitabilityGraph, edge_labels, schematic_dotstr, impact_dotstr, exploitability_dotstr
 
 '''

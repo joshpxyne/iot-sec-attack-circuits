@@ -225,7 +225,7 @@
                         }
                     ]
                 }
-            }, 
+            },
             "impact": {
                 "baseMetricV2": {
                     "acInsufInfo": false, 

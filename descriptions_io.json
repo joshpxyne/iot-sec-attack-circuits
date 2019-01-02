@@ -27,7 +27,7 @@
             "i/o": ["Unprotected Expose->Privacy Breach"],
             "id": "CVE-2018-11567"
         }
-    ], 
+    ],
     "Belkin WeMo": [
         {
             "description": "Stack-based Buffer Overflow vulnerability in libUPnPHndlr.so in Belkin Wemo Insight Smart Plug allows remote attackers to bypass local security protection via a crafted HTTP post packet.", 

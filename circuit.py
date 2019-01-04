@@ -191,7 +191,7 @@ def buildCircuit(devices,vector):
                 for io in cve_dev_x["i/o"]:
                     if cve_dev_x["id"]!="Non-CVE info: Router":
                         ImpactGraph.add_edge(cve_dev_x["id"],io.split('->')[1],capacity=100000.0)
-                        ExploitabilityGraph.add_edge(cve_dev_x["id"],io.split('->')[1],demand=1.0)
+                        ExploitabilityGraph.add_edge(cve_dev_x["id"],io.split('->')[1],demand=1.0,capacity=1.0)
                         try:
                             schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [label="' + cve_x_output + '" color="black"];\n'
                             impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
@@ -279,7 +279,7 @@ if __name__ == "__main__":
     max_impact = max_exploitability = 0
     for target in targets:
         max_impact += nx.maximum_flow_value(ImpactGraph, "Non-CVE info: Router", target)
-        min_cost = nx.min_cost_flow(ExploitabilityGraph)
+        min_cost = nx.max_flow_min_cost(ExploitabilityGraph, "Non-CVE info: Router", target)
         print("Min cost flow, "+target+": ",min_cost)
     print("Max Impact: ",max_impact)
 

@@ -3,14 +3,14 @@
         {
             "description": "Non-CVE I/O",
             "id": "Non-CVE info: Router",  
-            "i/o": ["Vulnerability->MITM","Vulnerability->DoS Attack","Vulnerability->this:Buffer Overflow","General Use->XSS","General Use->Unprotected Expose","General Use->DNS Rebinding Attack"]
+            "i/o": ["Vulnerability->MITM","Vulnerability->DoS Attack","Vulnerability->Belkin WeMo:Buffer Overflow","Vulnerability->HP Inkjet:Buffer Overflow","General Use->XSS","General Use->Unprotected Expose","General Use->DNS Rebinding Attack"]
         }
     ],
     "Amazon Echo": [
         {
             "id": "Non-CVE info: Amazon Echo",  
             "description": "Non-CVE I/O",
-            "i/o": ["Credentials->this:Root Privileges"]
+            "i/o": ["Credentials->Amazon Echo:Root Privileges"]
         },
         {
             "description": "The Amazon PAYFORT payfort-php-SDK payment gateway SDK through 2018-04-26 has XSS via an arbitrary parameter name or value that is mishandled in an error.php echo statement.", 
@@ -32,32 +32,32 @@
         {
             "description": "Stack-based Buffer Overflow vulnerability in libUPnPHndlr.so in Belkin Wemo Insight Smart Plug allows remote attackers to bypass local security protection via a crafted HTTP post packet.", 
             "id": "CVE-2018-6692", 
-            "i/o": ["this:Buffer Overflow->Credentials","this:Buffer Overflow->this:GPG Key"]
+            "i/o": ["Belkin WeMo:Buffer Overflow->Credentials","Belkin WeMo:Buffer Overflow->Belkin WeMo:GPG Key"]
         }, 
         {
             "description": "The Belkin WeMo Home Automation firmware before 3949 has a hardcoded GPG key, which makes it easier for remote attackers to spoof firmware updates and execute arbitrary code via crafted signed data.", 
             "id": "CVE-2013-6952", 
-            "i/o": ["this:GPG Key->this:Root Privileges"]
+            "i/o": ["Belkin WeMo:GPG Key->Belkin WeMo:Root Privileges"]
         }, 
         {
             "description": "The Belkin WeMo Home Automation firmware before 3949 does not maintain a set of Certification Authority public keys, which allows man-in-the-middle attackers to spoof SSL servers via an arbitrary X.509 certificate.", 
             "id": "CVE-2013-6951", 
-            "i/o": ["MITM->this:Root Privileges"]
+            "i/o": ["MITM->Belkin WeMo:Root Privileges"]
         }, 
         {
             "description": "The Belkin WeMo Home Automation firmware before 3949 does not use SSL for the distribution feed, which allows man-in-the-middle attackers to install arbitrary firmware by spoofing a distribution server.", 
             "id": "CVE-2013-6950",
-            "i/o": ["MITM->this:Root Privileges"]
+            "i/o": ["MITM->Belkin WeMo:Root Privileges"]
         }, 
         {
             "description": "The Belkin WeMo Home Automation firmware before 3949 does not properly use the STUN and TURN protocols, which allows remote attackers to hijack connections and possibly have unspecified other impact by leveraging access to a single WeMo device.", 
             "id": "CVE-2013-6949", 
-            "i/o": ["MITM->this:Root Privileges"]
+            "i/o": ["MITM->Belkin WeMo:Root Privileges"]
         }, 
         {
             "description": "The peerAddresses API in the Belkin WeMo Home Automation firmware before 3949 allows remote attackers to read arbitrary files via an XML document containing an external entity declaration in conjunction with an entity reference, related to an XML External Entity (XXE) issue.", 
             "id": "CVE-2013-6948", 
-            "i/o": ["Code Injection->Credentials","Code Injection->this:GPG Key"]
+            "i/o": ["Code Injection->Credentials","Code Injection->Belkin WeMo:GPG Key"]
         }
     ], 
     "Cisco IoT Field Network Director": [
@@ -76,22 +76,22 @@
         {
             "description": "D-Link DCS-825L devices with firmware 1.08 do not employ a suitable mechanism to prevent denial-of-service (DoS) attacks. An attacker can harm the device availability (i.e., live-online video/audio streaming) by using the hping3 tool to perform an IPv4 flood attack. Verified attacks includes SYN flooding, UDP flooding, ICMP flooding, and SYN-ACK flooding.", 
             "id": "CVE-2018-18442", 
-            "i/o": ["DoS Attack->this:Availability"]
+            "i/o": ["DoS Attack->D-Link Baby Monitor DCS 825-L:Availability"]
         }, 
         {
             "description": "D-Link DCS series Wi-Fi cameras expose sensitive information regarding the device configuration. The affected devices include many of DCS series, such as: DCS-936L, DCS-942L, DCS-8000LH, DCS-942LB1, DCS-5222L, DCS-825L, DCS-2630L, DCS-820L, DCS-855L, DCS-2121, DCS-5222LB1, DCS-5020L, and many more. There are many affected firmware versions starting from 1.00 and above. The configuration file can be accessed remotely through: <Camera-IP>/common/info.cgi, with no authentication. The configuration file include the following fields: model, product, brand, version, build, hw_version, nipca version, device name, location, MAC address, IP address, gateway IP address, wireless status, input/output settings, speaker, and sensor settings.", 
             "id": "CVE-2018-18441", 
-            "i/o": ["Unprotected Expose->this:Config File"]
+            "i/o": ["Unprotected Expose->D-Link Baby Monitor DCS 825-L:Config File"]
         }, 
         {
             "description": "The D-Link EyeOn Baby Monitor (DCS-825L) 1.08.1 has multiple command injection vulnerabilities in the web service framework. An attacker can forge malicious HTTP requests to execute commands; authentication is required before executing the attack.", 
             "id": "CVE-2017-11564", 
-            "i/o": ["Credentials->this:Root Privileges"]
+            "i/o": ["Credentials->D-Link Baby Monitor DCS 825-L:Root Privileges"]
         }, 
         {
             "description": "D-Link EyeOn Baby Monitor (DCS-825L) 1.08.1 has a remote code execution vulnerability. A UDP \"Discover\" service, which provides multiple functions such as changing the passwords and getting basic information, was installed on the device. A remote attacker can send a crafted UDP request to finderd to perform stack overflow and execute arbitrary code with root privilege on the device.", 
             "id": "CVE-2017-11563", 
-            "i/o": ["Unprotected Expose->this:Root Privileges"]
+            "i/o": ["Unprotected Expose->D-Link Baby Monitor DCS 825-L:Root Privileges"]
         }
     ], 
     "Google Home": [
@@ -110,24 +110,24 @@
         {
             "description": "Gynoii has a password of guest for the backdoor guest account and a password of 12345 for the backdoor admin account.", 
             "id": "CVE-2015-2881", 
-            "i/o": ["Unprotected Expose->this:Root Privileges"]
+            "i/o": ["Unprotected Expose->D-Link Baby Monitor DCS 825-L:Root Privileges"]
         }
     ], 
     "HP Inkjet": [
         {
             "id": "Non-CVE info: HP Inkjet",  
             "description": "Non-CVE I/O",
-            "i/o": ["this:Root Privileges->Privacy Breach"]
+            "i/o": ["HP Inkjet:Root Privileges->Privacy Breach"]
         },
         {
             "description": "A security vulnerability has been identified with certain HP Inkjet printers. A maliciously crafted file sent to an affected device can cause a static buffer overflow, which could allow remote code execution.", 
             "id": "CVE-2018-5925", 
-            "i/o": ["this:Buffer Overflow->Credentials","this:Buffer Overflow->this:Root Privileges"]
+            "i/o": ["HP Inkjet:Buffer Overflow->Credentials","HP Inkjet:Buffer Overflow->HP Inkjet:Root Privileges"]
         }, 
         {
             "description": "A security vulnerability has been identified with certain HP Inkjet printers. A maliciously crafted file sent to an affected device can cause a stack buffer overflow, which could allow remote code execution.", 
             "id": "CVE-2018-5924", 
-            "i/o": ["this:Buffer Overflow->Credentials","this:Buffer Overflow->this:Root Privileges"]
+            "i/o": ["HP Inkjet:Buffer Overflow->Credentials","HP Inkjet:Buffer Overflow->HP Inkjet:Root Privileges"]
         }
     ], 
     "Hoermann BiSecur": [

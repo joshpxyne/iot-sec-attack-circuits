@@ -90,16 +90,13 @@ def buildCircuit(devices,vector):
     ImpactGraph.add_node("Attacker")
     ExploitabilityGraph.add_node("Attacker")
 
-    schematic_dotstr += "  " + str(dev_ind) + ' [label="Attacker", shape=Mdiamond];\n'
-    impact_dotstr += "  " + str(dev_ind) + ' [label="Attacker", shape=Mdiamond];\n'
-    exploitability_dotstr += "  " + str(dev_ind) + ' [label="Attacker", shape=Mdiamond];\n'
-
     with open("descriptions_io.json") as desc:
         io_desc = json.load(desc)
         schematic_dotstr += '  0 -> 1 [label="Some router/network vulnerability"];\n'
         impact_dotstr += '  0 -> 1 [label="Some router/network vulnerability"];\n'
         exploitability_dotstr += '  0 -> 1 [label="Some router/network vulnerability"];\n'
         dotmap = {}
+        targets = []
 
         ### add all subgraphs, vertices (devices, CVEs) ###
 
@@ -108,7 +105,10 @@ def buildCircuit(devices,vector):
             schematic_dotstr += "  subgraph cluster_" + str(dev_ind) + ' {\n  label="'+device+'";'
             impact_dotstr += "  subgraph cluster_" + str(dev_ind) + ' {\n  label="'+device+'";'
             exploitability_dotstr += "  subgraph cluster_" + str(dev_ind) + ' {\n  label="'+device+'";'
-
+            if dev_ind==1:
+                schematic_dotstr += '  0 [label="Attacker '+ str(dev_ind) +'", shape=Mdiamond];\n' ## TODO: add support for multiple attackers other than at the network/router level
+                impact_dotstr += '  0 [label="Attacker '+ str(dev_ind) +'", shape=Mdiamond];\n'
+                exploitability_dotstr += '  0 [label="Attacker '+ str(dev_ind) +'", shape=Mdiamond];\n'
             for cve in io_desc[device]:
                 SchematicGraph.add_node(cve["id"])
                 ImpactGraph.add_node(cve["id"])
@@ -122,14 +122,34 @@ def buildCircuit(devices,vector):
                     attack_circuit[cve["id"]]["inputs"].append(io.split('->')[0])
                     if cve["description"]!="Non-CVE I/O":
                         attack_circuit[cve["id"]]["outputs"].append(io.split('->')[1])
+                        if dev_ind!=1 and io.split('->')[1] not in targets:
+                            targets.append(io.split('->')[1])
                     else:
                         attack_circuit[cve["id"]]["outputs"].append(io.split('->')[1])
+                        if dev_ind!=1 and io.split('->')[1] not in targets:
+                            targets.append(io.split('->')[1])
                 schematic_dotstr += "    " + str(cve_ind) + ' [label="' + cve["id"] + '"];\n'
                 impact_dotstr += "    " + str(cve_ind) + ' [label="' + cve["id"] + '"];\n'
                 exploitability_dotstr += "    " + str(cve_ind) + ' [label="' + cve["id"] + '"];\n'
             schematic_dotstr += "  }\n"
             impact_dotstr += "  }\n"
             exploitability_dotstr += "  }\n"
+        schematic_dotstr += "  subgraph cluster_" + str(dev_ind+1) + ' {\n  label="Attacker Targets";'
+        impact_dotstr += "  subgraph cluster_" + str(dev_ind+1) + ' {\n  label="Attacker Targets";'
+        exploitability_dotstr += "  subgraph cluster_" + str(dev_ind+1) + ' {\n  label="Attacker Targets";'
+        for target in targets:
+            SchematicGraph.add_node(target)
+            ImpactGraph.add_node(target)
+            ExploitabilityGraph.add_node(target)
+            cve_ind+=1
+            print(target)
+            dotmap[target] = cve_ind
+            schematic_dotstr += "    " + str(cve_ind) + ' [label="' + target + '"];\n'
+            impact_dotstr += "    " + str(cve_ind) + ' [label="' + target + '"];\n'
+            exploitability_dotstr += "    " + str(cve_ind) + ' [label="' + target + '"];\n'
+        schematic_dotstr += "  }\n"
+        impact_dotstr += "  }\n"
+        exploitability_dotstr += "  }\n"
 
         ### add all device edges ###       
         
@@ -143,10 +163,16 @@ def buildCircuit(devices,vector):
                                     SchematicGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"])
                                     try:
                                         ImpactGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],capacity=vector[cve_dev_y["id"]]["impact"])
-                                        ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],capacity=vector[cve_dev_y["id"]]["exploitability"])
+                                        if str(cve_dev_x["id"])=="Non-CVE info: Router":
+                                            ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],demand=-1.0)
+                                        else:
+                                            ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],weight=10 - vector[cve_dev_y["id"]]["exploitability"])
                                     except: # sometimes CVE doesn't have a CVSS score
                                         ImpactGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],capacity=3.0)
-                                        ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],capacity=3.0)
+                                        if str(cve_dev_x["id"])=="Non-CVE info: Router":
+                                            ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],demand=-1.0)
+                                        else:
+                                            ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],weight=7.0)
                                             
                                     edge_labels[(cve_dev_x["id"],cve_dev_y["id"])] = cve_x_output
                                     try:
@@ -162,27 +188,41 @@ def buildCircuit(devices,vector):
 
         for dev_x in devices:
             for cve_dev_x in io_desc[dev_x]:
-                if cve_dev_x["id"]!="Non-CVE info: Router":
-                    ImpactGraph.add_edge(cve_dev_x["id"],"Attacker",capacity=100000.0)
-                    ExploitabilityGraph.add_edge(cve_dev_x["id"],"Attacker",capacity=100000.0)
-                try:
-                    schematic_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="black"];\n'
-                    impact_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
-                    exploitability_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["exploitability"]) + '"];\n'
-                except: # sometimes CVE doesn't have a CVSS score
-                    schematic_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="black"];\n'
-                    impact_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="' + colorVertex(3.0) + '"];\n'
-                    exploitability_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="' + colorVertex(3.0) + '"];\n'
-                for cve_x_output in attack_circuit[cve_dev_x["id"]]["outputs"]:
-                    if cve_x_output.split(r"\n")[0] in attacker_stash:
+                for io in cve_dev_x["i/o"]:
+                    if cve_dev_x["id"]!="Non-CVE info: Router":
+                        ImpactGraph.add_edge(cve_dev_x["id"],io.split('->')[1],capacity=100000.0)
+                        ExploitabilityGraph.add_edge(cve_dev_x["id"],io.split('->')[1],demand=1.0)
                         try:
-                            schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="black"];\n'
-                            impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
-                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["exploitability"]) + '"];\n'
+                            schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [label="' + cve_x_output + '" color="black"];\n'
+                            impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
+                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["exploitability"]) + '"];\n'
                         except: # sometimes CVE doesn't have a CVSS score
-                            schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="black"];\n'
-                            impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
-                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
+                            schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [label="' + cve_x_output + '" color="black"];\n'
+                            impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
+                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
+        # for dev_x in devices:
+        #     for cve_dev_x in io_desc[dev_x]:
+        #         if cve_dev_x["id"]!="Non-CVE info: Router":
+        #             ImpactGraph.add_edge(cve_dev_x["id"],"Attacker",capacity=100000.0)
+        #             ExploitabilityGraph.add_edge(cve_dev_x["id"],"Attacker",capacity=100000.0)
+        #         try:
+        #             schematic_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="black"];\n'
+        #             impact_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
+        #             exploitability_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["exploitability"]) + '"];\n'
+        #         except: # sometimes CVE doesn't have a CVSS score
+        #             schematic_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="black"];\n'
+        #             impact_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="' + colorVertex(3.0) + '"];\n'
+        #             exploitability_dotstr += "    " + str(dotmap[cve_dev_x["id"]]) + ' [color="' + colorVertex(3.0) + '"];\n'
+        #         for cve_x_output in attack_circuit[cve_dev_x["id"]]["outputs"]:
+        #             if cve_x_output.split(r"\n")[0] in attacker_stash:
+        #                 try:
+        #                     schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="black"];\n'
+        #                     impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
+        #                     exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["exploitability"]) + '"];\n'
+        #                 except: # sometimes CVE doesn't have a CVSS score
+        #                     schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="black"];\n'
+        #                     impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
+        #                     exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> 0" + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
 
         ### build attack paths ###
 
@@ -200,8 +240,8 @@ def buildCircuit(devices,vector):
                         except:
                             paths[str(cve_dev_x["id"])+","+str(cve_dev_y["id"])] = "None"
 
-        print ("All paths: ",paths)
-    return paths, SchematicGraph, ImpactGraph, ExploitabilityGraph, edge_labels, schematic_dotstr, impact_dotstr, exploitability_dotstr
+        # print ("All paths: ",paths)
+    return paths, SchematicGraph, ImpactGraph, ExploitabilityGraph, edge_labels, schematic_dotstr, impact_dotstr, exploitability_dotstr, targets
 
 '''
 A network is an undirected graph with diameter d <= 2 where vertices are IoT devices in a 
@@ -233,35 +273,37 @@ if __name__ == "__main__":
 
     home_network, network_labels, vector = buildNetwork(devices)
     # print(vector)
-    paths, SchematicGraph, ImpactGraph, ExploitabilityGraph, edge_labels, schematic_dotstr, impact_dotstr, exploitability_dotstr = buildCircuit(devices,vector)
+    paths, SchematicGraph, ImpactGraph, ExploitabilityGraph, edge_labels, schematic_dotstr, impact_dotstr, exploitability_dotstr, targets = buildCircuit(devices,vector)
 
     ### find max flow values ###
-
-    max_impact = nx.maximum_flow_value(ImpactGraph, "Non-CVE info: Router", "Attacker")
-    max_exploitability = nx.maximum_flow_value(ExploitabilityGraph, "Non-CVE info: Router", "Attacker")
-    print("Max Impact: ",max_impact,"Max Exploitability: ",max_exploitability)
+    max_impact = max_exploitability = 0
+    for target in targets:
+        max_impact += nx.maximum_flow_value(ImpactGraph, "Non-CVE info: Router", target)
+        min_cost = nx.min_cost_flow(ExploitabilityGraph)
+        print("Min cost flow, "+target+": ",min_cost)
+    print("Max Impact: ",max_impact)
 
     ### save ###
 
-    snap.DrawGViz(home_network, snap.gvlDot, "home_network.png", "Home Network", network_labels)
-    schematic_dotfile = open("schematic_circuit.dot", "w")
+    snap.DrawGViz(home_network, snap.gvlDot, "deliverables/home_network.png", "Home Network", network_labels)
+    schematic_dotfile = open("deliverables/schematic_circuit.dot", "w")
     schematic_dotfile.write(schematic_dotstr)
     schematic_dotfile.close()
-    impact_dotfile = open("impact_circuit.dot", "w")
+    impact_dotfile = open("deliverables/impact_circuit.dot", "w")
     impact_dotfile.write(impact_dotstr)
     impact_dotfile.close()
-    exploitability_dotfile = open("exploitability_circuit.dot", "w")
+    exploitability_dotfile = open("deliverables/exploitability_circuit.dot", "w")
     exploitability_dotfile.write(exploitability_dotstr)
     exploitability_dotfile.close()
 
     ### draw ###
 
-    (schematic_graph,) = pydot.graph_from_dot_file('schematic_circuit.dot')
-    schematic_graph.write_png('schematic_circuit.png')
-    (impact_graph,) = pydot.graph_from_dot_file('impact_circuit.dot')
-    impact_graph.write_png('impact_circuit.png')
-    (exploitability_graph,) = pydot.graph_from_dot_file('exploitability_circuit.dot')
-    exploitability_graph.write_png('exploitability_circuit.png')
+    (schematic_graph,) = pydot.graph_from_dot_file('deliverables/schematic_circuit.dot')
+    schematic_graph.write_png('deliverables/schematic_circuit.png')
+    (impact_graph,) = pydot.graph_from_dot_file('deliverables/impact_circuit.dot')
+    impact_graph.write_png('deliverables/impact_circuit.png')
+    (exploitability_graph,) = pydot.graph_from_dot_file('deliverables/exploitability_circuit.dot')
+    exploitability_graph.write_png('deliverables/exploitability_circuit.png')
 
     # nx_node_labels = nx.draw_networkx_labels(G,pos=graphviz_layout(G, prog='dot'))
     # nx_edge_labels = nx.draw_networkx_edge_labels(G,pos=graphviz_layout(G, prog='dot'),edge_labels=edge_labels,font_color='red') 

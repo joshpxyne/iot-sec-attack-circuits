@@ -90,6 +90,7 @@ for index in sortedIndexes:
     idf = featuresIdf[index]
 
     # use top k terms here
+    # top k terms here will contain a mix of input and output terms for use in i/o
     #print(feature, idf)
 
 # process cleaned descriptions
@@ -114,4 +115,5 @@ for cleanedDescriptionIndex in range(len(allCleanedDescriptions)):
     sortedTokens = [tokens[index] for index in sortedIndexes]
 
     # use top k terms here
-    print(sortedTokens)
+    # top k terms here will contain a mix of input and output terms for use in i/o
+    #print(sortedTokens)

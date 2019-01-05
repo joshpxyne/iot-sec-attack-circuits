@@ -17,23 +17,117 @@ digraph G {
     5 [label="CVE-2018-11567"];
   }
   subgraph cluster_3 {
-  label="Attacker Targets";    6 [label="Amazon Echo:Root Privileges"];
-    7 [label="Cookies"];
-    8 [label="Credentials"];
-    9 [label="Privacy Breach"];
+  label="Google Home";    6 [label="Non-CVE info: Google Home"];
+    7 [label="CVE-2018-12716"];
+  }
+  subgraph cluster_4 {
+  label="Belkin WeMo";    8 [label="CVE-2018-6692"];
+    9 [label="CVE-2013-6952"];
+    10 [label="CVE-2013-6951"];
+    11 [label="CVE-2013-6950"];
+    12 [label="CVE-2013-6949"];
+    13 [label="CVE-2013-6948"];
+  }
+  subgraph cluster_5 {
+  label="D-Link Baby Monitor DCS 825-L";    14 [label="CVE-2018-18767"];
+    15 [label="CVE-2018-18442"];
+    16 [label="CVE-2018-18441"];
+    17 [label="CVE-2017-11564"];
+    18 [label="CVE-2017-11563"];
+  }
+  subgraph cluster_6 {
+  label="HP Inkjet";    19 [label="Non-CVE info: HP Inkjet"];
+    20 [label="CVE-2018-5925"];
+    21 [label="CVE-2018-5924"];
+  }
+  subgraph cluster_7 {
+  label="Gynoii Baby Monitor";    22 [label="CVE-2015-2881"];
+  }
+  subgraph cluster_8 {
+  label="Attacker Targets";    23 [label="Amazon Echo:Root Privileges"];
+    24 [label="Cookies"];
+    25 [label="Credentials"];
+    26 [label="Privacy Breach"];
+    27 [label="Google Account Access"];
+    28 [label="Physical Location"];
+    29 [label="Belkin WeMo:GPG Key"];
+    30 [label="Belkin WeMo:Root Privileges"];
+    31 [label="D-Link Baby Monitor DCS 825-L:Availability"];
+    32 [label="D-Link Baby Monitor DCS 825-L:Config File"];
+    33 [label="D-Link Baby Monitor DCS 825-L:Root Privileges"];
+    34 [label="HP Inkjet:Root Privileges"];
   }
   1 -> 3 [label="XSS" color="yellow3"];
   1 -> 3 [label="XSS" color="yellow3"];
   1 -> 4 [label="XSS" color="yellow3"];
   1 -> 4 [label="XSS" color="yellow3"];
   1 -> 5 [label="Unprotected Expose" color="yellow3"];
+  1 -> 7 [label="DNS Rebinding Attack" color="yellow3"];
+  1 -> 8 [label="Belkin WeMo:Buffer Overflow" color="yellow3"];
+  1 -> 8 [label="Belkin WeMo:Buffer Overflow" color="yellow3"];
+  1 -> 10 [label="MITM" color="yellow3"];
+  1 -> 11 [label="MITM" color="yellow3"];
+  1 -> 12 [label="MITM" color="yellow3"];
+  1 -> 14 [label="MITM" color="yellow3"];
+  1 -> 15 [label="DoS Attack" color="yellow3"];
+  1 -> 16 [label="Unprotected Expose" color="yellow3"];
+  1 -> 18 [label="Unprotected Expose" color="yellow3"];
+  1 -> 20 [label="HP Inkjet:Buffer Overflow" color="yellow3"];
+  1 -> 20 [label="HP Inkjet:Buffer Overflow" color="yellow3"];
+  1 -> 21 [label="HP Inkjet:Buffer Overflow" color="yellow3"];
+  1 -> 21 [label="HP Inkjet:Buffer Overflow" color="yellow3"];
+  1 -> 22 [label="Unprotected Expose" color="yellow3"];
   3 -> 2 [label="Credentials" color="yellow3"];
   4 -> 2 [label="Credentials" color="yellow3"];
-  2 ->  6 [label="Privacy Breach" color="yellow3"];
-  3 -> 7 [label="Privacy Breach" color="yellow3"];
-  3 -> 8 [label="Privacy Breach" color="yellow3"];
-  4 -> 7 [label="Privacy Breach" color="yellow3"];
-  4 -> 8 [label="Privacy Breach" color="yellow3"];
-  5 -> 9 [label="Privacy Breach" color="greenyellow"];
+  3 -> 6 [label="Credentials" color="yellow3"];
+  4 -> 6 [label="Credentials" color="yellow3"];
+  3 -> 17 [label="Credentials" color="yellow3"];
+  4 -> 17 [label="Credentials" color="yellow3"];
+  8 -> 2 [label="Credentials" color="red3"];
+  13 -> 2 [label="Credentials" color="red3"];
+  8 -> 6 [label="Credentials" color="red3"];
+  13 -> 6 [label="Credentials" color="red3"];
+  8 -> 9 [label="Belkin WeMo:GPG Key" color="red3"];
+  13 -> 9 [label="Belkin WeMo:GPG Key" color="red3"];
+  8 -> 17 [label="Credentials" color="red3"];
+  13 -> 17 [label="Credentials" color="red3"];
+  14 -> 2 [label="Credentials" color="yellow3"];
+  14 -> 6 [label="Credentials" color="yellow3"];
+  14 -> 17 [label="Credentials" color="yellow3"];
+  20 -> 2 [label="Credentials" color="orange2"];
+  21 -> 2 [label="Credentials" color="orange2"];
+  20 -> 6 [label="Credentials" color="orange2"];
+  21 -> 6 [label="Credentials" color="orange2"];
+  20 -> 17 [label="Credentials" color="orange2"];
+  21 -> 17 [label="Credentials" color="orange2"];
+  20 -> 19 [label="HP Inkjet:Root Privileges" color="orange2"];
+  21 -> 19 [label="HP Inkjet:Root Privileges" color="orange2"];
+  2 ->  23 [color="yellow3"];
+  3 -> 24 [color="yellow3"];
+  3 -> 25 [color="yellow3"];
+  4 -> 24 [color="yellow3"];
+  4 -> 25 [color="yellow3"];
+  5 -> 26 [color="greenyellow"];
+  6 ->  27 [color="yellow3"];
+  7 -> 28 [color="greenyellow"];
+  8 -> 25 [color="red3"];
+  8 -> 29 [color="red3"];
+  9 -> 30 [color="purple4"];
+  10 -> 30 [color="red3"];
+  11 -> 30 [color="red3"];
+  12 -> 30 [color="purple4"];
+  13 -> 25 [color="red3"];
+  13 -> 29 [color="red3"];
+  14 ->  25 [color="yellow3"];
+  15 ->  31 [color="yellow3"];
+  16 ->  32 [color="yellow3"];
+  17 -> 33 [color="orange2"];
+  18 -> 33 [color="orange2"];
+  19 ->  26 [color="yellow3"];
+  20 -> 25 [color="orange2"];
+  20 -> 34 [color="orange2"];
+  21 -> 25 [color="orange2"];
+  21 -> 34 [color="orange2"];
+  22 -> 33 [color="orange2"];
   label = "\nAttack Circuit: Impact\n";  fontsize=24;
 }

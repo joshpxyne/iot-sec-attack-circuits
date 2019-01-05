@@ -193,13 +193,13 @@ def buildCircuit(devices,vector):
                         ImpactGraph.add_edge(cve_dev_x["id"],io.split('->')[1],capacity=100000.0)
                         ExploitabilityGraph.add_edge(cve_dev_x["id"],io.split('->')[1],demand=1.0,capacity=1.0)
                         try:
-                            schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [label="' + cve_x_output + '" color="black"];\n'
-                            impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
-                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["exploitability"]) + '"];\n'
+                            schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
+                            impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
+                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["exploitability"]) + '"];\n'
                         except: # sometimes CVE doesn't have a CVSS score
-                            schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [label="' + cve_x_output + '" color="black"];\n'
-                            impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
-                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
+                            schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
+                            impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(3.0) + '"];\n'
+                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(3.0) + '"];\n'
         # for dev_x in devices:
         #     for cve_dev_x in io_desc[dev_x]:
         #         if cve_dev_x["id"]!="Non-CVE info: Router":
@@ -279,8 +279,12 @@ if __name__ == "__main__":
     max_impact = max_exploitability = 0
     for target in targets:
         max_impact += nx.maximum_flow_value(ImpactGraph, "Non-CVE info: Router", target)
-        min_cost = nx.max_flow_min_cost(ExploitabilityGraph, "Non-CVE info: Router", target)
-        print("Min cost flow, "+target+": ",min_cost)
+        try:
+            min_cost = nx.max_flow_min_cost(ExploitabilityGraph, "Non-CVE info: Router", target)
+            print("Min cost flow, "+target+": ",min_cost)
+        except: 
+            print("Min cost flow, "+target+": no path")
+        
     print("Max Impact: ",max_impact)
 
     ### save ###

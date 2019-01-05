@@ -1,0 +1,53 @@
+\documentclass[10pt, conference]{IEEEtran}
+
+%some packages we might use
+\usepackage{subfigure}
+\usepackage{graphicx}
+\usepackage{graphicx, subfigure, epsfig, multirow}
+% \usepackage[urlbordercolor={1 1 1}, linkbordercolor={1 1 1}]{hyperref}
+\usepackage[urlbordercolor={1 1 1} ]{hyperref}
+\usepackage[hyphenbreaks]{breakurl}
+\usepackage{amssymb,amsmath}
+% \usepackage[ruled,vlined]{algorithm2e}
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+\usepackage{color}
+
+%this makes our life easy
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+\newcommand{\code}[1]{{\fontfamily{cmtt}\fontseries{m}\fontshape{n}\selectfont\footnotesize{#1}}}
+\newcommand{\captionsmall}[1]{{\selectfont\small{#1}}}
+
+\newcommand{\ks}[1]{\textcolor{red}{[KS: #1]}}
+\newcommand{\TODO}[1]{\textcolor{red}{#1}}
+\newcommand{\todo}[1]{\textcolor{red}{#1}}
+
+%change font size in algorithm
+\makeatletter
+\renewcommand{\ALG@beginalgorithmic}{\footnotesize}
+\makeatother
+
+\begin{document}
+%
+% paper title
+\title{Attack Circuits for Security Inference in IoT Networks}
+
+
+\author{ }
+
+% make the title area
+\maketitle
+
+\input{abstract}
+\input{introduction}
+\input{overview}
+%\input{relatedworks}
+%\input{conclusion}
+
+%the bib
+%\footnotesize
+\bibliographystyle{plain}
+\bibliography{paper_ref}
+
+
+\end{document}

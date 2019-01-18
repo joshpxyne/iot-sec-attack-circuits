@@ -1,7 +1,7 @@
 # libraries used
 import json
 
-from nltk import pos_tag
+import nltk
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize
 from nltk.tokenize.treebank import TreebankWordDetokenizer
@@ -10,6 +10,8 @@ import re
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
+
+import sys
 
 # reduce text to comparable format
 def clean_text(text):
@@ -42,13 +44,14 @@ def clean_text(text):
     return text
 
 # load data from file
+# first pass on data
 def load_data():
     # read tweets
     with open('../descriptions_io.json', 'r') as inFile:
         data = json.loads(inFile.read())
 
     allCleanedDescriptions = []
-    for deviceName in data.keys():
+    for deviceName in sorted(data.keys()):
         for deviceData in data[deviceName]:
             description = deviceData['description']
             cleanedDescription = clean_text(description)
@@ -70,13 +73,11 @@ def load_data():
                 cleanedIOList.append(cleanedPair)
             deviceData['cleaned_i/o'] = cleanedIOList
 
-            posTags = pos_tag(word_tokenize(cleanedDescription))
-            deviceData['pos_tags'] = posTags
-
     # return modified data
     # cleaned components have been added
-    return [data, allCleanedDescriptions] 
-            
+    return [data, allCleanedDescriptions]
+
+# accumulate and process
 [data, allCleanedDescriptions] = load_data()
 
 # compute tf idf scores
@@ -89,51 +90,52 @@ featuresIdf = tfIdfVectorizer.idf_
 # idf can be a heuristic to extract important terms
 sortedIndexes = np.argsort(featuresIdf)[::-1]
 
-'''
-K = 50
-for index in sortedIndexes[:K]:
-    feature = features[index]
-    idf = featuresIdf[index]
+cleanedDescriptionsIndex = -1
+for deviceName in sorted(data.keys()):
+    for deviceData in data[deviceName]:
+        cleanedDescription = deviceData['cleaned_description']
+        cleanedDescriptionsIndex += 1
+        tokens = cleanedDescription.split(' ')
+        tfIdfValues = []
 
-    # use top k terms here
-    # top k terms here will contain a mix of input and output terms for use in i/o
-    print(feature, idf)
-'''
+        for token in tokens:
+            # mandate minimum token length of 2 to remove invalid tokens
+            if(len(token) == 1):
+                continue
+            
+            # all tokens that reach this line can be found in features
+            tokenIndex = features.index(token)
+            tfIdfValue = tfIdfMatrix[cleanedDescriptionsIndex,tokenIndex]            
+            tfIdfValues.append(tfIdfValue)
 
-# process cleaned descriptions
-for cleanedDescriptionIndex in range(len(allCleanedDescriptions)):
-    cleanedDescription = allCleanedDescriptions[cleanedDescriptionIndex]
-    tokens = cleanedDescription.split(' ')
+        # use tf idf to extract important terms
+        sortedIndexes = np.argsort(tfIdfValues)[::-1]
+        sortedTokens = [tokens[index] for index in sortedIndexes]
 
-    tfIdfValues = []
-    for token in tokens:
+        # use top k terms here
+        # top k terms here will contain a mix of input and output terms for use in i/o
+        deviceData['sorted_tokens'] = sortedTokens
 
-        # mandate minimum token length of 2 to remove invalid tokens
-        if(len(token) == 1):
-            continue
-
-        # all tokens that reach this line can be found in features
-        tokenIndex = features.index(token)
-        tfIdfValue = tfIdfMatrix[cleanedDescriptionIndex,tokenIndex]
-        tfIdfValues.append(tfIdfValue)
-
-    # use tf idf to extract important terms
-    sortedIndexes = np.argsort(tfIdfValues)[::-1]
-    sortedTokens = [tokens[index] for index in sortedIndexes]
-
-    # use top k terms here
-    # top k terms here will contain a mix of input and output terms for use in i/o
-    #print(sortedTokens)
-
-
-
-
-
-
+        posTags = nltk.pos_tag(word_tokenize(cleanedDescription))
+        deviceData['pos_tags'] = posTags
+        filteredPosTags = [x for x in posTags if 'NN' not in x[1]]
+            
+        # order filtered pos tags based on tfidf values
+        filteredPosTags.sort(key=lambda x: sortedTokens.index(x[0]))
+        deviceData['filtered_pos_tags'] = filteredPosTags
+        
 for item in data:
     for subItem in data[item]:
+        if('cleaned_i/o' not in subItem.keys()):
+            # consider invalid
+            continue
+
         print(subItem['description'])
         print(subItem['cleaned_description'])
         print(subItem['i/o'])
+        print(subItem['cleaned_i/o'])
+        print(subItem['pos_tags'])
+        print(subItem['filtered_pos_tags'])
+        print(subItem['sorted_tokens'])
         print()
     

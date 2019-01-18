@@ -1,6 +1,7 @@
 # libraries used
 import json
 
+from nltk import pos_tag
 from nltk.corpus import stopwords 
 from nltk.tokenize import word_tokenize
 from nltk.tokenize.treebank import TreebankWordDetokenizer
@@ -69,6 +70,9 @@ def load_data():
                 cleanedIOList.append(cleanedPair)
             deviceData['cleaned_i/o'] = cleanedIOList
 
+            posTags = pos_tag(word_tokenize(cleanedDescription))
+            deviceData['pos_tags'] = posTags
+
     # return modified data
     # cleaned components have been added
     return [data, allCleanedDescriptions] 
@@ -85,13 +89,16 @@ featuresIdf = tfIdfVectorizer.idf_
 # idf can be a heuristic to extract important terms
 sortedIndexes = np.argsort(featuresIdf)[::-1]
 
-for index in sortedIndexes:
+'''
+K = 50
+for index in sortedIndexes[:K]:
     feature = features[index]
     idf = featuresIdf[index]
 
     # use top k terms here
     # top k terms here will contain a mix of input and output terms for use in i/o
-    #print(feature, idf)
+    print(feature, idf)
+'''
 
 # process cleaned descriptions
 for cleanedDescriptionIndex in range(len(allCleanedDescriptions)):
@@ -117,3 +124,16 @@ for cleanedDescriptionIndex in range(len(allCleanedDescriptions)):
     # use top k terms here
     # top k terms here will contain a mix of input and output terms for use in i/o
     #print(sortedTokens)
+
+
+
+
+
+
+for item in data:
+    for subItem in data[item]:
+        print(subItem['description'])
+        print(subItem['cleaned_description'])
+        print(subItem['i/o'])
+        print()
+    

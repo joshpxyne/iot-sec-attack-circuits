@@ -122,7 +122,13 @@ for deviceName in sorted(data.keys()):
         posTags = nltk.pos_tag(word_tokenize(cleanedDescription))
         deviceData['pos_tags'] = posTags
         filteredPosTags = [x for x in posTags if 'NN' not in x[1]]
-            
+        #filteredPosTags = [x for x in posTags if 'NN' in x[1]]
+
+
+        #print(sortedTokens)
+        #print(
+        #sys.exit()
+        
         # order filtered pos tags based on tfidf values
         filteredPosTags.sort(key=lambda x: sortedTokens.index(x[0]))
         deviceData['filtered_pos_tags'] = filteredPosTags
@@ -132,20 +138,21 @@ for item in data:
         if('cleaned_i/o' not in subItem.keys()):
             # consider invalid
             continue
-
         
         print()
-        print(subItem['description'])
-        print(subItem['cleaned_description'])
+        #print(subItem['description'])
+        #print(subItem['cleaned_description'])
         #print(subItem['i/o'])
         #print(subItem['cleaned_i/o'])
         #print(subItem['pos_tags'])
-        print(subItem['filtered_pos_tags'])
+        #print(subItem['filtered_pos_tags'])
         #print(subItem['sorted_tokens'])
-        
 
-        subItemJSON = {'id': subItem['id'], 'text': subItem['cleaned_description']}
-        #subItemJSON = {'id': subItem['id'], 'text': subItem['description']}
+        # using pytextrank
+        # reference https://github.com/ceteri/pytextrank/issues/18
+
+        #subItemJSON = {'id': subItem['id'], 'text': subItem['cleaned_description']}
+        subItemJSON = {'id': subItem['id'], 'text': subItem['description']}
         subItemJSON = json.dumps(subItemJSON)
 
         # raw input
@@ -167,9 +174,37 @@ for item in data:
                 rlLists.append(rlList)
                 print(rlList)
 
-        filteredRlLists = [x for x in rlLists if 'nn' not in x[-2]]
         print()
-        print(filteredRlLists)
-        
+                
+        # filter results based on pos
+        # this is a heuristic
+        filteredRlLists = [x for x in rlLists if 'nn' not in x[-2]]
+
+        if(len(filteredRlLists) == 0):
+            # invalid case
+            continue
+
+        for x in filteredRlLists:
+            #print(x)
+            pass
+            
         # cleanup
         os.system('rm -f sub_item.json stage1_output.json stage2_output.json graph.dot')
+
+        # the first item in filteredRLLists is a heuristic for 'i'
+        heuristic = filteredRlLists[0][0]
+
+        print('$$$$$')
+        filteredRlLists = [x for x in rlLists if 'nn' in x[-2]]
+        for x in filteredRlLists:
+            #print(x)
+            pass
+            
+        print('heuristic:', heuristic)
+        
+        # stem each token in heuristic
+        # use highest rated token based on sorted tokens from tfidf
+        heuristicTokens = clean_text(heuristic).split(' ')
+        heuristicTokens.sort(key=lambda x: subItem['sorted_tokens'].index(x))
+        iOInput = heuristicTokens[0]
+        print('i/o input:', iOInput)

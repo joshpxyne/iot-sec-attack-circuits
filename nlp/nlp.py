@@ -14,6 +14,7 @@ import numpy as np
 import json
 
 import sys
+import os
 
 # reduce text to comparable format
 def clean_text(text):
@@ -163,3 +164,6 @@ for item in data:
             for rl in pytextrank.normalize_key_phrases('stage1_output.json', ranks):
                 outFile.write("%s\n" % pytextrank.pretty_print(rl._asdict()))
                 print(pytextrank.pretty_print(rl))
+
+        # cleanup
+        os.system('rm -f sub_item.json stage1_output.json stage2_output.json graph.dot')

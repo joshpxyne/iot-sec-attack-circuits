@@ -1,0 +1,23 @@
+{"count": 3, "ids": [285], "pos": "nn", "rank": 0.10237896047031476, "text": "entiti"}
+{"count": 2, "ids": [282], "pos": "nn", "rank": 0.08110190265531336, "text": "xml"}
+{"count": 1, "ids": [153], "pos": "nn", "rank": 0.06897130520859315, "text": "issu"}
+{"count": 1, "ids": [100], "pos": "nn", "rank": 0.06845514778898323, "text": "extern"}
+{"count": 1, "ids": [281, 102, 246, 247, 115, 254, 170], "pos": "np", "rank": 0.06657216975204104, "text": "peeraddress api belkin wemo home autom firmwar"}
+{"count": 1, "ids": [76, 48], "pos": "np", "rank": 0.06424056919842232, "text": "remot attack"}
+{"count": 1, "ids": [144], "pos": "nn", "rank": 0.04785769849536536, "text": "file"}
+{"count": 1, "ids": [289], "pos": "nn", "rank": 0.04473435695239124, "text": "xxe"}
+{"count": 1, "ids": [81], "pos": "nn", "rank": 0.04348588741715407, "text": "relat"}
+{"count": 1, "ids": [288], "pos": "vbp", "rank": 0.04286218951385385, "text": "refer"}
+{"count": 1, "ids": [283], "pos": "nn", "rank": 0.04255917396752412, "text": "document"}
+{"count": 1, "ids": [287], "pos": "nn", "rank": 0.04246731177139158, "text": "conjunct"}
+{"count": 1, "ids": [119], "pos": "vbd", "rank": 0.03474581135296172, "text": "read"}
+{"count": 1, "ids": [284], "pos": "vbp", "rank": 0.03427806942041796, "text": "contain"}
+{"count": 1, "ids": [75], "pos": "vbp", "rank": 0.033678794737625764, "text": "allow"}
+{"count": 1, "ids": [170], "pos": "nn", "rank": 0.03328608487602052, "text": "firmwar"}
+{"count": 1, "ids": [76], "pos": "nn", "rank": 0.03212028459921116, "text": "remot"}
+{"count": 1, "ids": [48], "pos": "nn", "rank": 0.02707465679689943, "text": "attack"}
+{"count": 1, "ids": [254], "pos": "nn", "rank": 0.026119855885099245, "text": "autom"}
+{"count": 1, "ids": [115], "pos": "nn", "rank": 0.02048131583224059, "text": "home"}
+{"count": 1, "ids": [247], "pos": "nn", "rank": 0.017821083963271978, "text": "wemo"}
+{"count": 1, "ids": [246], "pos": "nn", "rank": 0.013886606880696564, "text": "belkin"}
+{"count": 1, "ids": [102], "pos": "nn", "rank": 0.0108207624642069, "text": "api"}

@@ -6,10 +6,12 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.tokenize.treebank import TreebankWordDetokenizer
 from nltk.stem import PorterStemmer
-import re
-
 from sklearn.feature_extraction.text import TfidfVectorizer
+import pytextrank
+
+import re
 import numpy as np
+import json
 
 import sys
 
@@ -130,6 +132,7 @@ for item in data:
             # consider invalid
             continue
 
+        '''
         print(subItem['description'])
         print(subItem['cleaned_description'])
         print(subItem['i/o'])
@@ -137,5 +140,26 @@ for item in data:
         print(subItem['pos_tags'])
         print(subItem['filtered_pos_tags'])
         print(subItem['sorted_tokens'])
+        '''
+
         print()
-    
+
+        subItemJSON = {'id': subItem['id'], 'text': subItem['cleaned_description']}
+        subItemJSON = json.dumps(subItemJSON)
+
+        # raw input
+        with open('sub_item.json', 'w') as outFile:
+            outFile.write(subItemJSON)
+
+        # stage 1
+        with open('stage1_output.json', 'w') as outFile:
+            for graf in pytextrank.parse_doc(pytextrank.json_iter('sub_item.json')):
+                outFile.write("%s\n" % pytextrank.pretty_print(graf._asdict()))
+
+        # stage 2
+        graph, ranks = pytextrank.text_rank('stage1_output.json')
+        pytextrank.render_ranks(graph, ranks)
+        with open('stage2_output.json', 'w') as outFile:
+            for rl in pytextrank.normalize_key_phrases('stage1_output.json', ranks):
+                outFile.write("%s\n" % pytextrank.pretty_print(rl._asdict()))
+                print(pytextrank.pretty_print(rl))

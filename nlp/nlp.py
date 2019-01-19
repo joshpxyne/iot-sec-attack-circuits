@@ -16,6 +16,8 @@ import json
 import sys
 import os
 
+MAX_INPUT_LENGTH = 3
+
 # reduce text to comparable format
 def clean_text(text):
     # text preprocessing
@@ -203,8 +205,22 @@ for item in data:
         print('heuristic:', heuristic)
         
         # stem each token in heuristic
-        # use highest rated token based on sorted tokens from tfidf
+        # use highest rated token based on sorted tokens from tfidf        
         heuristicTokens = clean_text(heuristic).split(' ')
         heuristicTokens.sort(key=lambda x: subItem['sorted_tokens'].index(x))
-        iOInput = heuristicTokens[0]
-        print('i/o input:', iOInput)
+
+        # only use top few tokens
+        # rearrange tokens in the order of cleaned heuristic, so that the phrase makes more sense
+        heursiticTokens = heuristicTokens[:MAX_INPUT_LENGTH]
+        cleanedHeuristic = clean_text(heuristic)
+        
+        print('heuristic tokens:', heuristicTokens)
+        print('cleaned heuristic:', cleanedHeuristic)
+
+        heuristicTokens.sort(key=lambda x: cleanedHeuristic.split(' ').index(x))
+        print('sorted heuristic tokens:', heuristicTokens)
+        
+        
+        #detokenizer = TreebankWordDetokenizer()
+        #iOInput = detokenizer.detokenize()
+        #print('i/o input:', iOInput)

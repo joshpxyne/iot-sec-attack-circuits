@@ -140,24 +140,22 @@ for item in data:
         if('cleaned_i/o' not in subItem.keys()):
             # consider invalid
             continue
-        
-        print()
-        #print(subItem['description'])
+
+        print('###############')
+        print('description:', subItem['description'])
         #print(subItem['cleaned_description'])
         #print(subItem['i/o'])
         #print(subItem['cleaned_i/o'])
         #print(subItem['pos_tags'])
         #print(subItem['filtered_pos_tags'])
         #print(subItem['sorted_tokens'])
-
+        
         # using pytextrank
         # reference https://github.com/ceteri/pytextrank/issues/18
-
-        #subItemJSON = {'id': subItem['id'], 'text': subItem['cleaned_description']}
+        
+        # raw input
         subItemJSON = {'id': subItem['id'], 'text': subItem['description']}
         subItemJSON = json.dumps(subItemJSON)
-
-        # raw input
         with open('sub_item.json', 'w') as outFile:
             outFile.write(subItemJSON)
 
@@ -170,14 +168,13 @@ for item in data:
         graph, ranks = pytextrank.text_rank('stage1_output.json')
         pytextrank.render_ranks(graph, ranks)
         rlLists = []
+        print('key phrases:')
         with open('stage2_output.json', 'w') as outFile:
             for rl in pytextrank.normalize_key_phrases('stage1_output.json', ranks):
                 rlList = eval(pytextrank.pretty_print(rl))
                 rlLists.append(rlList)
                 print(rlList)
 
-        print()
-                
         # filter results based on pos
         # this is a heuristic
         filteredRlLists = [x for x in rlLists if 'nn' not in x[-2]]
@@ -186,23 +183,11 @@ for item in data:
             # invalid case
             continue
 
-        for x in filteredRlLists:
-            #print(x)
-            pass
-            
         # cleanup
         os.system('rm -f sub_item.json stage1_output.json stage2_output.json graph.dot')
 
         # the first item in filteredRLLists is a heuristic for 'i'
         heuristic = filteredRlLists[0][0]
-
-        print('$$$$$')
-        filteredRlLists = [x for x in rlLists if 'nn' in x[-2]]
-        for x in filteredRlLists:
-            #print(x)
-            pass
-            
-        print('heuristic:', heuristic)
         
         # stem each token in heuristic
         # use highest rated token based on sorted tokens from tfidf        
@@ -213,14 +198,11 @@ for item in data:
         # rearrange tokens in the order of cleaned heuristic, so that the phrase makes more sense
         heursiticTokens = heuristicTokens[:MAX_INPUT_LENGTH]
         cleanedHeuristic = clean_text(heuristic)
-        
-        print('heuristic tokens:', heuristicTokens)
-        print('cleaned heuristic:', cleanedHeuristic)
-
         heuristicTokens.sort(key=lambda x: cleanedHeuristic.split(' ').index(x))
-        print('sorted heuristic tokens:', heuristicTokens)
-        
-        
-        #detokenizer = TreebankWordDetokenizer()
-        #iOInput = detokenizer.detokenize()
-        #print('i/o input:', iOInput)
+        detokenizer = TreebankWordDetokenizer()
+        iOInput = detokenizer.detokenize(heuristicTokens)
+
+        print('heuristic:', heuristic)
+        print('i/o input:', iOInput)
+
+        print('###############')

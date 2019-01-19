@@ -133,19 +133,19 @@ for item in data:
             # consider invalid
             continue
 
-        '''
+        
+        print()
         print(subItem['description'])
         print(subItem['cleaned_description'])
-        print(subItem['i/o'])
-        print(subItem['cleaned_i/o'])
-        print(subItem['pos_tags'])
+        #print(subItem['i/o'])
+        #print(subItem['cleaned_i/o'])
+        #print(subItem['pos_tags'])
         print(subItem['filtered_pos_tags'])
-        print(subItem['sorted_tokens'])
-        '''
-
-        print()
+        #print(subItem['sorted_tokens'])
+        
 
         subItemJSON = {'id': subItem['id'], 'text': subItem['cleaned_description']}
+        #subItemJSON = {'id': subItem['id'], 'text': subItem['description']}
         subItemJSON = json.dumps(subItemJSON)
 
         # raw input
@@ -160,10 +160,16 @@ for item in data:
         # stage 2
         graph, ranks = pytextrank.text_rank('stage1_output.json')
         pytextrank.render_ranks(graph, ranks)
+        rlLists = []
         with open('stage2_output.json', 'w') as outFile:
             for rl in pytextrank.normalize_key_phrases('stage1_output.json', ranks):
-                outFile.write("%s\n" % pytextrank.pretty_print(rl._asdict()))
-                print(pytextrank.pretty_print(rl))
+                rlList = eval(pytextrank.pretty_print(rl))
+                rlLists.append(rlList)
+                print(rlList)
 
+        filteredRlLists = [x for x in rlLists if 'nn' not in x[-2]]
+        print()
+        print(filteredRlLists)
+        
         # cleanup
         os.system('rm -f sub_item.json stage1_output.json stage2_output.json graph.dot')

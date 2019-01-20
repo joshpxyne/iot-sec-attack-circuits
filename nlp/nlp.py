@@ -186,8 +186,6 @@ def do_heuristic(subItem, filteredRlLists):
             distance = nltk.edit_distance(token, item)
             items.append((distance, item))
         items.sort()
-        print('token', token)
-        print('items', items)
 
         # use the first item that is not already in the list
         for item in items:

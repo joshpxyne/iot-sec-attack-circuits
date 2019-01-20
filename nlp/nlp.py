@@ -103,7 +103,55 @@ def do_tf_idf(data, allCleanedDescriptions):
             deviceData['sorted_tokens'] = sortedTokens
 
     return data
-            
+
+def do_heuristic(subItem, filteredRlLists):
+    # the first item in filteredRLLists is a heuristic for 'i'
+    heuristic = filteredRlLists[0][0]
+
+    # stem each token in heuristic
+    # use highest rated token based on sorted tokens from tfidf
+    # find the closest thing that looks like token in sorted list
+    # note: heuristic token may not be in sorted tokens. this is assumed as default
+    heuristicTokens = clean_text(heuristic).split(' ')
+    tokenScores = {}
+    for item in heuristicTokens:
+        tokenScores[item] = -1
+        matches = [y for y in subItem['sorted_tokens'] if y in item]
+
+        if(len(matches) > 0):
+            match = matches[0]
+            tokenScores[item] = subItem['sorted_tokens'].index(match)
+
+    heuristicTokens.sort(key=lambda x: tokenScores[x])
+
+    # only use top few tokens
+    # rearrange tokens in the order of cleaned heuristic, so that the phrase makes more sense
+    heuristicTokens = heuristicTokens[:MAX_INPUT_LENGTH]
+    cleanedHeuristic = clean_text(heuristic)
+    heuristicTokens.sort(key=lambda x: cleanedHeuristic.split(' ').index(x))
+
+    # convert input back to heuristic syntactics
+    # replace each token with corresponding word from heuristic with maximum overlap
+    # use edit distance
+    matches = []
+    for token in heuristicTokens:
+        items = []
+        for item in heuristic.split(' '):
+            distance = nltk.edit_distance(token, item)
+            items.append((distance, item))
+        items.sort()
+
+        # use the first item that is not already in the list
+        for item in items:
+            if(item[1] not in matches):
+                matches.append(item[1])
+                break
+
+    detokenizer = TreebankWordDetokenizer()
+    iOItem = detokenizer.detokenize(matches)
+
+    return [heuristic, iOItem]
+
 def do_pytextrank(data):
     for item in data:
         for subItem in data[item]:
@@ -138,66 +186,30 @@ def do_pytextrank(data):
             # cleanup
             os.system('rm -f sub_item.json stage1_output.json stage2_output.json graph.dot')
 
-            # filter results based on pos
+            # input filter results based on pos
             # this is a heuristic
             filteredRlLists = [x for x in rlLists if 'nn' not in x[-2]]
             if(len(filteredRlLists) == 0):
                 # invalid case
                 continue
             else:
-                do_heuristic(subItem, filteredRlLists)
+                [heuristic, iOItem] = do_heuristic(subItem, filteredRlLists)
+                print('heuristic:', heuristic)
+                print('i/o input:', iOItem)
 
-def do_heuristic(subItem, filteredRlLists):
-    # the first item in filteredRLLists is a heuristic for 'i'
-    heuristic = filteredRlLists[0][0]
+            # input filter results based on pos
+            # this is a heuristic
+            filteredRlLists = [x for x in rlLists if 'nn' in x[-2]]
+            if(len(filteredRlLists) == 0):
+                # invalid case
+                continue
+            else:
+                [heuristic, iOItem] = do_heuristic(subItem, filteredRlLists)
+                print('heuristic:', heuristic)
+                print('i/o output:', iOItem)
 
-    # stem each token in heuristic
-    # use highest rated token based on sorted tokens from tfidf
-    # find the closest thing that looks like token in sorted list
-    # note: heuristic token may not be in sorted tokens. this is assumed as default
-    heuristicTokens = clean_text(heuristic).split(' ')
-    tokenScores = {}
-    for item in heuristicTokens:
-        tokenScores[item] = -1
-        matches = [y for y in subItem['sorted_tokens'] if y in item]
+            print('###############')
 
-        if(len(matches) > 0):
-            match = matches[0]
-            tokenScores[item] = subItem['sorted_tokens'].index(match)
-
-    heuristicTokens.sort(key=lambda x: tokenScores[x])
-
-    # only use top few tokens
-    # rearrange tokens in the order of cleaned heuristic, so that the phrase makes more sense
-    heuristicTokens = heuristicTokens[:MAX_INPUT_LENGTH]
-    cleanedHeuristic = clean_text(heuristic)
-
-    heuristicTokens.sort(key=lambda x: cleanedHeuristic.split(' ').index(x))
-    detokenizer = TreebankWordDetokenizer()
-    iOInput = detokenizer.detokenize(heuristicTokens)
-
-    # convert input back to heuristic syntactics
-    # replace each token with corresponding word from heuristic with maximum overlap
-    # use edit distance
-    matches = []
-    for token in heuristicTokens:
-        items = []
-        for item in heuristic.split(' '):
-            distance = nltk.edit_distance(token, item)
-            items.append((distance, item))
-        items.sort()
-
-        # use the first item that is not already in the list
-        for item in items:
-            if(item[1] not in matches):
-                matches.append(item[1])
-                break
-
-    iOInput = detokenizer.detokenize(matches)
-
-    print('heuristic:', heuristic)
-    print('i/o input:', iOInput)
-    print('###############')
 
 def main():
     # accumulate and process data            

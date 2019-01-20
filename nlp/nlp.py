@@ -188,15 +188,18 @@ def do_heuristic(subItem, filteredRlLists):
         items.sort()
         print('token', token)
         print('items', items)
-        matches.append(items[0][1])
+
+        # use the first item that is not already in the list
+        for item in items:
+            if(item[1] not in matches):
+                matches.append(item[1])
+                break
+
     iOInput = detokenizer.detokenize(matches)
 
     print('heuristic:', heuristic)
     print('i/o input:', iOInput)
     print('###############')
-
-    if('fake information' in heuristic):
-        sys.exit()
 
 def main():
     # accumulate and process data            

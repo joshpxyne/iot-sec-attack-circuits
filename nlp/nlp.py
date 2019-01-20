@@ -191,9 +191,10 @@ def do_pytextrank(data):
             print('i/o input:', iOInput)
             print('###############')
 
-# accumulate and process
-[data, allCleanedDescriptions] = load_data()
-data = do_tf_idf(data, allCleanedDescriptions)
-do_pytextrank(data)
-print('bye')
-sys.exit()
+def main():
+    # accumulate and process data            
+    [data, allCleanedDescriptions] = load_data()
+    data = do_tf_idf(data, allCleanedDescriptions)
+    do_pytextrank(data)
+
+main()

@@ -67,125 +67,133 @@ def load_data():
     # cleaned components have been added
     return [data, allCleanedDescriptions]
 
+def do_tf_idf(data, allCleanedDescriptions):
+    # compute tf idf scores
+    tfIdfVectorizer = TfidfVectorizer()
+    tfIdfMatrix = tfIdfVectorizer.fit_transform(allCleanedDescriptions)
+    features = tfIdfVectorizer.get_feature_names()
+    featuresIdf = tfIdfVectorizer.idf_
+
+    # get all features in reverse idf order
+    # idf can be a heuristic to extract important terms
+    sortedIndexes = np.argsort(featuresIdf)[::-1]
+
+    cleanedDescriptionsIndex = -1
+    for deviceName in sorted(data.keys()):
+        for deviceData in data[deviceName]:
+            cleanedDescription = deviceData['cleaned_description']
+            cleanedDescriptionsIndex += 1
+            tokens = cleanedDescription.split(' ')
+            tfIdfValues = []
+
+            for token in tokens:
+                # mandate minimum token length of 2 to remove invalid tokens
+                if(len(token) == 1):
+                    continue
+
+                # all tokens that reach this line can be found in features
+                tokenIndex = features.index(token)
+                tfIdfValue = tfIdfMatrix[cleanedDescriptionsIndex,tokenIndex]
+                tfIdfValues.append(tfIdfValue)
+
+            # use tf idf to extract important terms
+            # sort them in descending order of score
+            sortedIndexes = np.argsort(tfIdfValues)[::-1]
+            sortedTokens = [tokens[index] for index in sortedIndexes]
+            deviceData['sorted_tokens'] = sortedTokens
+
+    return data
+            
+def do_pytextrank(data):
+    for item in data:
+        for subItem in data[item]:
+            print('###############')
+            print('description:', subItem['description'])
+
+            # using pytextrank
+            # reference https://github.com/ceteri/pytextrank/issues/18
+
+            # raw input
+            subItemJSON = {'id': subItem['id'], 'text': subItem['description']}
+            subItemJSON = json.dumps(subItemJSON)
+            with open('sub_item.json', 'w') as outFile:
+                outFile.write(subItemJSON)
+
+            # stage 1
+            with open('stage1_output.json', 'w') as outFile:
+                for graf in pytextrank.parse_doc(pytextrank.json_iter('sub_item.json')):
+                    outFile.write("%s\n" % pytextrank.pretty_print(graf._asdict()))
+
+            # stage 2
+            graph, ranks = pytextrank.text_rank('stage1_output.json')
+            pytextrank.render_ranks(graph, ranks)
+            rlLists = []
+            print('key phrases:')
+            with open('stage2_output.json', 'w') as outFile:
+                for rl in pytextrank.normalize_key_phrases('stage1_output.json', ranks):
+                    rlList = eval(pytextrank.pretty_print(rl))
+                    rlLists.append(rlList)
+                    print(rlList)
+
+            # filter results based on pos
+            # this is a heuristic
+            filteredRlLists = [x for x in rlLists if 'nn' not in x[-2]]
+
+            if(len(filteredRlLists) == 0):
+                # invalid case
+                continue
+
+            # cleanup
+            os.system('rm -f sub_item.json stage1_output.json stage2_output.json graph.dot')
+
+            # the first item in filteredRLLists is a heuristic for 'i'
+            heuristic = filteredRlLists[0][0]
+
+            # stem each token in heuristic
+            # use highest rated token based on sorted tokens from tfidf
+            # find the closest thing that looks like token in sorted list
+            # note: heuristic token may not be in sorted tokens. this is assumed as default
+            heuristicTokens = clean_text(heuristic).split(' ')
+            tokenScores = {}
+            for item in heuristicTokens:
+                tokenScores[item] = -1
+                matches = [y for y in subItem['sorted_tokens'] if y in item]
+
+                if(len(matches) > 0):
+                    match = matches[0]
+                    tokenScores[item] = subItem['sorted_tokens'].index(match)
+
+            heuristicTokens.sort(key=lambda x: tokenScores[x])
+
+            # only use top few tokens
+            # rearrange tokens in the order of cleaned heuristic, so that the phrase makes more sense
+            heuristicTokens = heuristicTokens[:MAX_INPUT_LENGTH]
+            cleanedHeuristic = clean_text(heuristic)
+
+            heuristicTokens.sort(key=lambda x: cleanedHeuristic.split(' ').index(x))
+            detokenizer = TreebankWordDetokenizer()
+            iOInput = detokenizer.detokenize(heuristicTokens)
+
+            # convert input back to heuristic syntactics
+            # replace each token with corresponding word from heuristic with maximum overlap
+            # use edit distance
+            matches = []
+            for token in heuristicTokens:
+                items = []
+                for item in heuristic.split(' '):
+                    distance = nltk.edit_distance(token, item)
+                    items.append((distance, item))
+                items.sort()
+                matches.append(items[0][1])
+            iOInput = detokenizer.detokenize(matches)
+
+            print('heuristic:', heuristic)
+            print('i/o input:', iOInput)
+            print('###############')
+
 # accumulate and process
 [data, allCleanedDescriptions] = load_data()
-
-# compute tf idf scores
-tfIdfVectorizer = TfidfVectorizer()
-tfIdfMatrix = tfIdfVectorizer.fit_transform(allCleanedDescriptions)
-features = tfIdfVectorizer.get_feature_names()
-featuresIdf = tfIdfVectorizer.idf_
-
-# get all features in reverse idf order
-# idf can be a heuristic to extract important terms
-sortedIndexes = np.argsort(featuresIdf)[::-1]
-
-cleanedDescriptionsIndex = -1
-for deviceName in sorted(data.keys()):
-    for deviceData in data[deviceName]:
-        cleanedDescription = deviceData['cleaned_description']
-        cleanedDescriptionsIndex += 1
-        tokens = cleanedDescription.split(' ')
-        tfIdfValues = []
-
-        for token in tokens:
-            # mandate minimum token length of 2 to remove invalid tokens
-            if(len(token) == 1):
-                continue
-            
-            # all tokens that reach this line can be found in features
-            tokenIndex = features.index(token)
-            tfIdfValue = tfIdfMatrix[cleanedDescriptionsIndex,tokenIndex]            
-            tfIdfValues.append(tfIdfValue)
-
-        # use tf idf to extract important terms
-        # sort them in descending order of score
-        sortedIndexes = np.argsort(tfIdfValues)[::-1]
-        sortedTokens = [tokens[index] for index in sortedIndexes]
-        deviceData['sorted_tokens'] = sortedTokens
-
-for item in data:
-    for subItem in data[item]:
-        print('###############')
-        print('description:', subItem['description'])
-        
-        # using pytextrank
-        # reference https://github.com/ceteri/pytextrank/issues/18
-        
-        # raw input
-        subItemJSON = {'id': subItem['id'], 'text': subItem['description']}
-        subItemJSON = json.dumps(subItemJSON)
-        with open('sub_item.json', 'w') as outFile:
-            outFile.write(subItemJSON)
-
-        # stage 1
-        with open('stage1_output.json', 'w') as outFile:
-            for graf in pytextrank.parse_doc(pytextrank.json_iter('sub_item.json')):
-                outFile.write("%s\n" % pytextrank.pretty_print(graf._asdict()))
-
-        # stage 2
-        graph, ranks = pytextrank.text_rank('stage1_output.json')
-        pytextrank.render_ranks(graph, ranks)
-        rlLists = []
-        print('key phrases:')
-        with open('stage2_output.json', 'w') as outFile:
-            for rl in pytextrank.normalize_key_phrases('stage1_output.json', ranks):
-                rlList = eval(pytextrank.pretty_print(rl))
-                rlLists.append(rlList)
-                print(rlList)
-
-        # filter results based on pos
-        # this is a heuristic
-        filteredRlLists = [x for x in rlLists if 'nn' not in x[-2]]
-
-        if(len(filteredRlLists) == 0):
-            # invalid case
-            continue
-
-        # cleanup
-        os.system('rm -f sub_item.json stage1_output.json stage2_output.json graph.dot')
-
-        # the first item in filteredRLLists is a heuristic for 'i'
-        heuristic = filteredRlLists[0][0]
-        
-        # stem each token in heuristic
-        # use highest rated token based on sorted tokens from tfidf
-        # find the closest thing that looks like token in sorted list
-        # note: heuristic token may not be in sorted tokens. this is assumed as default
-        heuristicTokens = clean_text(heuristic).split(' ')
-        tokenScores = {}
-        for item in heuristicTokens:
-            tokenScores[item] = -1
-            matches = [y for y in subItem['sorted_tokens'] if y in item]
-
-            if(len(matches) > 0):
-                match = matches[0]
-                tokenScores[item] = subItem['sorted_tokens'].index(match)
-
-        heuristicTokens.sort(key=lambda x: tokenScores[x])
-
-        # only use top few tokens
-        # rearrange tokens in the order of cleaned heuristic, so that the phrase makes more sense
-        heuristicTokens = heuristicTokens[:MAX_INPUT_LENGTH]
-        cleanedHeuristic = clean_text(heuristic)
-
-        heuristicTokens.sort(key=lambda x: cleanedHeuristic.split(' ').index(x))
-        detokenizer = TreebankWordDetokenizer()
-        iOInput = detokenizer.detokenize(heuristicTokens)
-
-        # convert input back to heuristic syntactics
-        # replace each token with corresponding word from heuristic with maximum overlap
-        # use edit distance
-        matches = []
-        for token in heuristicTokens:
-            items = []
-            for item in heuristic.split(' '):
-                distance = nltk.edit_distance(token, item)
-                items.append((distance, item))
-            items.sort()
-            matches.append(items[0][1])
-        iOInput = detokenizer.detokenize(matches)
-
-        print('heuristic:', heuristic)
-        print('i/o input:', iOInput)
-        print('###############')
+data = do_tf_idf(data, allCleanedDescriptions)
+do_pytextrank(data)
+print('bye')
+sys.exit()

@@ -63,21 +63,6 @@ def load_data():
             deviceData['cleaned_description'] = cleanedDescription
             allCleanedDescriptions.append(cleanedDescription)
             
-            iOList = deviceData['i/o']
-            if(len(iOList) == 0):
-                # no processing for empty list
-                continue
-
-            cleanedIOList = []
-            for pair in iOList:
-                pairInput = pair.split('->')[0]
-                pairOutput = pair.split('->')[1]
-                cleanedPairInput = clean_text(pairInput)
-                cleanedPairOutput = clean_text(pairOutput)
-                cleanedPair = cleanedPairInput + "->" + cleanedPairOutput
-                cleanedIOList.append(cleanedPair)
-            deviceData['cleaned_i/o'] = cleanedIOList
-
     # return modified data
     # cleaned components have been added
     return [data, allCleanedDescriptions]
@@ -114,41 +99,15 @@ for deviceName in sorted(data.keys()):
             tfIdfValues.append(tfIdfValue)
 
         # use tf idf to extract important terms
+        # sort them in descending order of score
         sortedIndexes = np.argsort(tfIdfValues)[::-1]
         sortedTokens = [tokens[index] for index in sortedIndexes]
-
-        # use top k terms here
-        # top k terms here will contain a mix of input and output terms for use in i/o
         deviceData['sorted_tokens'] = sortedTokens
 
-        posTags = nltk.pos_tag(word_tokenize(cleanedDescription))
-        deviceData['pos_tags'] = posTags
-        filteredPosTags = [x for x in posTags if 'NN' not in x[1]]
-        #filteredPosTags = [x for x in posTags if 'NN' in x[1]]
-
-
-        #print(sortedTokens)
-        #print(
-        #sys.exit()
-        
-        # order filtered pos tags based on tfidf values
-        filteredPosTags.sort(key=lambda x: sortedTokens.index(x[0]))
-        deviceData['filtered_pos_tags'] = filteredPosTags
-        
 for item in data:
     for subItem in data[item]:
-        if('cleaned_i/o' not in subItem.keys()):
-            # consider invalid
-            continue
-
         print('###############')
         print('description:', subItem['description'])
-        #print(subItem['cleaned_description'])
-        #print(subItem['i/o'])
-        #print(subItem['cleaned_i/o'])
-        #print(subItem['pos_tags'])
-        #print(subItem['filtered_pos_tags'])
-        #print(subItem['sorted_tokens'])
         
         # using pytextrank
         # reference https://github.com/ceteri/pytextrank/issues/18
@@ -190,19 +149,30 @@ for item in data:
         heuristic = filteredRlLists[0][0]
         
         # stem each token in heuristic
-        # use highest rated token based on sorted tokens from tfidf        
+        # use highest rated token based on sorted tokens from tfidf
+        # find the closest thing that looks like token in sorted list
+        # note: heuristic token may not be in sorted tokens. this is assumed as default
         heuristicTokens = clean_text(heuristic).split(' ')
-        heuristicTokens.sort(key=lambda x: subItem['sorted_tokens'].index(x))
+        tokenScores = {}
+        for item in heuristicTokens:
+            tokenScores[item] = -1
+            matches = [y for y in subItem['sorted_tokens'] if y in item]
+
+            if(len(matches) > 0):
+                match = matches[0]
+                tokenScores[item] = subItem['sorted_tokens'].index(match)
+
+        heuristicTokens.sort(key=lambda x: tokenScores[x])
 
         # only use top few tokens
         # rearrange tokens in the order of cleaned heuristic, so that the phrase makes more sense
         heursiticTokens = heuristicTokens[:MAX_INPUT_LENGTH]
         cleanedHeuristic = clean_text(heuristic)
+
         heuristicTokens.sort(key=lambda x: cleanedHeuristic.split(' ').index(x))
         detokenizer = TreebankWordDetokenizer()
         iOInput = detokenizer.detokenize(heuristicTokens)
 
         print('heuristic:', heuristic)
         print('i/o input:', iOInput)
-
         print('###############')

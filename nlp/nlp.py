@@ -166,12 +166,25 @@ for item in data:
 
         # only use top few tokens
         # rearrange tokens in the order of cleaned heuristic, so that the phrase makes more sense
-        heursiticTokens = heuristicTokens[:MAX_INPUT_LENGTH]
+        heuristicTokens = heuristicTokens[:MAX_INPUT_LENGTH]
         cleanedHeuristic = clean_text(heuristic)
 
         heuristicTokens.sort(key=lambda x: cleanedHeuristic.split(' ').index(x))
         detokenizer = TreebankWordDetokenizer()
         iOInput = detokenizer.detokenize(heuristicTokens)
+
+        # convert input back to heuristic syntactics
+        # replace each token with corresponding word from heuristic with maximum overlap
+        # use edit distance
+        matches = []
+        for token in heuristicTokens:
+            items = []
+            for item in heuristic.split(' '):
+                distance = nltk.edit_distance(token, item)
+                items.append((distance, item))
+            items.sort()
+            matches.append(items[0][1])
+        iOInput = detokenizer.detokenize(matches)
 
         print('heuristic:', heuristic)
         print('i/o input:', iOInput)

@@ -13,7 +13,7 @@ import collections
 import itertools
 import matplotlib.pyplot as plt
 from optparse import OptionParser
-
+import time as time
 ### Things the attacker might be aiming to obtain. ###
 
 attacker_stash = ["Privacy Breach","this:Root Privileges","this:GPG Key","Credentials","this:Availability","this:Config File","Google Account Access","Physical Location","Privacy Breach"]
@@ -168,21 +168,33 @@ def buildCircuit(devices,vector):
                                         else:
                                             ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],weight=10 - vector[cve_dev_y["id"]]["exploitability"])
                                     except: # sometimes CVE doesn't have a CVSS score
-                                        ImpactGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],capacity=3.0)
+                                        ImpactGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],capacity=5.0)
                                         if str(cve_dev_x["id"])=="Non-CVE info: Router":
                                             ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],demand=-1.0)
                                         else:
                                             ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],weight=7.0)
                                             
                                     edge_labels[(cve_dev_x["id"],cve_dev_y["id"])] = cve_x_output
+                                    if (cve_dev_y["id"][:3]=="CVE" or cve_dev_y["id"][:3]=="Non"):
+                                        try:
+                                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_y["id"]]["exploitability"]) + '"];\n'
+                                        except: 
+                                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(5.0) + '"];\n'
+
+                                    else:
+                                        exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="black"];\n'
+
                                     try:
                                         schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="black"];\n'
                                         impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
-                                        exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(vector[cve_dev_x["id"]]["exploitability"]) + '"];\n'
                                     except:
                                         schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="black"];\n'
-                                        impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
-                                        exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
+                                        if (cve_dev_x["id"]=="Non-CVE info: Router"):
+                                            impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="black"];\n'
+                                        else:
+                                            impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(5.0) + '"];\n'
+
+                                        # exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[cve_dev_y["id"]]) + ' [label="' + cve_x_output + '" color="' + colorVertex(3.0) + '"];\n'
 
         ### add all attacker edges ###
 
@@ -195,11 +207,11 @@ def buildCircuit(devices,vector):
                         try:
                             schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
                             impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
-                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["exploitability"]) + '"];\n'
+                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
                         except: # sometimes CVE doesn't have a CVSS score
                             schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
-                            impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(3.0) + '"];\n'
-                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(3.0) + '"];\n'
+                            impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(5.0) + '"];\n'
+                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
         # for dev_x in devices:
         #     for cve_dev_x in io_desc[dev_x]:
         #         if cve_dev_x["id"]!="Non-CVE info: Router":
@@ -264,6 +276,7 @@ def buildNetwork(devices):
     return home_network, labels, vector
 
 if __name__ == "__main__":
+    timestamp = time.time()
     parser = OptionParser()
     parser.add_option("-d", "--devices", dest="devices",help="input device")
     (options, args) = parser.parse_args()
@@ -287,6 +300,7 @@ if __name__ == "__main__":
         
     print("Max Impact: ",max_impact)
 
+    print ("Time: " + str(time.time()-timestamp))
     ### save ###
 
     snap.DrawGViz(home_network, snap.gvlDot, "deliverables/home_network.png", "Home Network", network_labels)
@@ -308,7 +322,6 @@ if __name__ == "__main__":
     impact_graph.write_png('deliverables/impact_circuit.png')
     (exploitability_graph,) = pydot.graph_from_dot_file('deliverables/exploitability_circuit.dot')
     exploitability_graph.write_png('deliverables/exploitability_circuit.png')
-
     # nx_node_labels = nx.draw_networkx_labels(G,pos=graphviz_layout(G, prog='dot'))
     # nx_edge_labels = nx.draw_networkx_edge_labels(G,pos=graphviz_layout(G, prog='dot'),edge_labels=edge_labels,font_color='red') 
     # nx.draw(G, pos=graphviz_layout(G, prog='dot'),node_size=1600,node_color=range(len(G)))

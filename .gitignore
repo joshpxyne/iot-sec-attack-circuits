@@ -1,2 +1,4 @@
 cve-data/*
 .DS_Store
+logs/*.pcap
+logs/*.csv

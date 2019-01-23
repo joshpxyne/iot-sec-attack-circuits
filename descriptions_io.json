@@ -3,7 +3,7 @@
         {
             "description": "Non-CVE I/O",
             "id": "Non-CVE info: Router",  
-            "i/o": ["Vulnerability->MITM","Vulnerability->DoS Attack","Vulnerability->Belkin WeMo:Buffer Overflow","Vulnerability->HP Inkjet:Buffer Overflow","General Use->XSS","General Use->Unprotected Expose","General Use->DNS Rebinding Attack"]
+            "i/o": ["Vulnerability->MITM","Vulnerability->DoS Attack","Vulnerability->Belkin WeMo:Buffer Overflow","Vulnerability->HP Inkjet:Buffer Overflow","General Use->XSS","General Use->Unprotected Expose","General Use->DNS Rebinding"]
         }
     ],
     "Amazon Echo": [
@@ -103,14 +103,14 @@
         {
             "description": "The API service on Google Home and Chromecast devices before mid-July 2018 does not prevent DNS rebinding attacks from reading the scan_results JSON data, which allows remote attackers to determine the physical location of most web browsers by leveraging the presence of one of these devices on its local network, extracting the scan_results bssid fields, and sending these fields in a geolocation/v1/geolocate Google Maps Geolocation API request.", 
             "id": "CVE-2018-12716", 
-            "i/o": ["DNS Rebinding Attack->Physical Location"]
+            "i/o": ["DNS Rebinding->Physical Location"]
         }
     ],
     "Gynoii Baby Monitor": [
         {
             "description": "Gynoii has a password of guest for the backdoor guest account and a password of 12345 for the backdoor admin account.", 
             "id": "CVE-2015-2881", 
-            "i/o": ["Unprotected Expose->D-Link Baby Monitor DCS 825-L:Root Privileges"]
+            "i/o": ["Unprotected Expose->Gynoii Baby Monitor:Admin Privileges"]
         }
     ], 
     "HP Inkjet": [
@@ -286,14 +286,14 @@
             "i/o": []
         }
     ], 
-    "Roku digital media player": [
+    "Roku Media Player": [
         {
             "description": "The External Control API in Roku and Roku TV products allow unauthorized access via a DNS Rebind attack. This can result in remote device control and privileged device and network information to be exfiltrated by an attacker.", 
             "id": "CVE-2018-11314", 
-            "i/o": ["DNS Rebinding Attack->Root Privileges","DNS Rebinding Attack->this:Config File"]
+            "i/o": ["DNS Rebinding->this:Root Priv","DNS Rebinding->this:Config File"]
         }
     ], 
-    "Samsung SmartThings": [
+    "Samsung SmartThings Hub": [
         {
             "description": "An exploitable stack-based buffer overflow vulnerability exists in the retrieval of database fields in the video-core HTTP server of the Samsung SmartThings Hub STH-ETH-250 - Firmware version 0.20.17. The strcpy call overflows the destination buffer, which has a size of 64 bytes. An attacker can send an arbitrarily long \"bucket\" value in order to exploit this vulnerability.", 
             "id": "CVE-2018-3915", 

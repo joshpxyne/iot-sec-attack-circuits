@@ -6,11 +6,15 @@ graph G {
   graph [splines=true overlap=false]
   node  [shape=ellipse, width=0.3, height=0.3]
   1 [label="Router"];
-  2 [label="Amazon Echo"];
-  3 [label="Roku Media Player"];
-  4 [label="HP Inkjet"];
+  2 [label="Google Home"];
+  3 [label="Amazon Echo"];
+  4 [label="Roku Media Player"];
+  5 [label="HP Inkjet"];
+  6 [label="Belkin WeMo"];
   1 -- 2;
   1 -- 3;
   1 -- 4;
+  1 -- 5;
+  1 -- 6;
   label = "\nHome Network\n";  fontsize=24;
 }

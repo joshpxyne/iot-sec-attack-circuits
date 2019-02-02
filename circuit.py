@@ -151,7 +151,9 @@ def buildCircuit(devices,vector):
         impact_dotstr += "  }\n"
         exploitability_dotstr += "  }\n"
 
-        ### add all device edges ###       
+        ### add all device edges ###
+        ExploitabilityGraph.add_node("Attacker")
+        ExploitabilityGraph.add_edge("Attacker","Non-CVE info: Router",demand=-1.0) 
         
         for dev_x in devices:
             for dev_y in devices: # loop thru inputs, outputs of the two CVEs. Currently, add edge if i/o matches.
@@ -164,13 +166,13 @@ def buildCircuit(devices,vector):
                                     try:
                                         ImpactGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],capacity=vector[cve_dev_y["id"]]["impact"])
                                         if str(cve_dev_x["id"])=="Non-CVE info: Router":
-                                            ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],demand=-1.0)
+                                            ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],capacity=1,weight=10 - vector[cve_dev_y["id"]]["exploitability"])
                                         else:
                                             ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],weight=10 - vector[cve_dev_y["id"]]["exploitability"])
                                     except: # sometimes CVE doesn't have a CVSS score
                                         ImpactGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],capacity=5.0)
                                         if str(cve_dev_x["id"])=="Non-CVE info: Router":
-                                            ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],demand=-1.0)
+                                            ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],demand=-1.0,weight=10-vector[cve_dev_y["id"]]["exploitability"])
                                         else:
                                             ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],weight=7.0)
                                             
@@ -203,7 +205,9 @@ def buildCircuit(devices,vector):
                 for io in cve_dev_x["i/o"]:
                     if cve_dev_x["id"]!="Non-CVE info: Router":
                         ImpactGraph.add_edge(cve_dev_x["id"],io.split('->')[1],capacity=100000.0)
-                        ExploitabilityGraph.add_edge(cve_dev_x["id"],io.split('->')[1],demand=1.0,capacity=1.0)
+                        if io.split('->')[1]=="Cookies": # what crown jewel do you want to target?
+                            print("ga")
+                            ExploitabilityGraph.add_edge(cve_dev_x["id"],io.split('->')[1],demand=1.0)
                         try:
                             schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
                             impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
@@ -287,13 +291,15 @@ if __name__ == "__main__":
     home_network, network_labels, vector = buildNetwork(devices)
     # print(vector)
     paths, SchematicGraph, ImpactGraph, ExploitabilityGraph, edge_labels, schematic_dotstr, impact_dotstr, exploitability_dotstr, targets = buildCircuit(devices,vector)
-
+    print(nx.get_edge_attributes(ExploitabilityGraph,"weight"))
+    print(nx.get_edge_attributes(ExploitabilityGraph,"demand"))
+    print(nx.get_edge_attributes(ExploitabilityGraph,"capacity"))
     ### find max flow values ###
     max_impact = max_exploitability = 0
     for target in targets:
         max_impact += nx.maximum_flow_value(ImpactGraph, "Non-CVE info: Router", target)
         try:
-            min_cost = nx.max_flow_min_cost(ExploitabilityGraph, "Non-CVE info: Router", target)
+            min_cost = nx.max_flow_min_cost(ExploitabilityGraph, "Attacker", target)
             print("Min cost flow, "+target+": ",min_cost)
         except: 
             print("Min cost flow, "+target+": no path")

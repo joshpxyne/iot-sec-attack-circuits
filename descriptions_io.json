@@ -24,7 +24,7 @@
         }, 
         {
             "description": "** DISPUTED ** Prior to 2018-04-27, the reprompt feature in Amazon Echo devices could be misused by a custom Alexa skill. The reprompt feature is designed so that if Alexa does not receive an input within 8 seconds, the device can speak a reprompt, then wait an additional 8 seconds for input; if the user still does not respond, the microphone is then turned off. The vulnerability involves empty output-speech reprompts, custom wildcard (\"gibberish\") input slots, and logging of detected speech. If a maliciously designed skill is installed, an attacker could obtain transcripts of speech not intended for Alexa to process, but simply spoken within the device's hearing range. NOTE: The vendor states \"Customer trust is important to us and we take security and privacy seriously. We have put mitigations in place for detecting this type of skill behavior and reject or suppress those skills when we do. Customers do not need to take any action for these mitigations to work.\"", 
-            "i/o": ["Unprotected Expose->Privacy Breach"],
+            "i/o": ["Unprotected Expose->Privacy Breach **Disputed**"],
             "id": "CVE-2018-11567"
         }
     ],
@@ -57,7 +57,12 @@
         {
             "description": "The peerAddresses API in the Belkin WeMo Home Automation firmware before 3949 allows remote attackers to read arbitrary files via an XML document containing an external entity declaration in conjunction with an entity reference, related to an XML External Entity (XXE) issue.", 
             "id": "CVE-2013-6948", 
-            "i/o": ["Code Injection->Credentials","Code Injection->Belkin WeMo:GPG Key"]
+            "i/o": ["Code Injection->Credentials","Code Injection->Belkin WeMo:GPG Key","Code Injection->Remote Device Control:WeMo"]
+        },
+        {
+            "id": "Non-CVE Info",
+            "description": "Non-CVE I/O",
+            "i/o": ["Amazon Echo:Root Privileges->Remote WeMo Control"]
         }
     ], 
     "Cisco IoT Field Network Director": [

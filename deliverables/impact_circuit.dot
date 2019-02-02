@@ -11,57 +11,106 @@ digraph G {
     1 [label="Non-CVE info: Router"];
   }
   subgraph cluster_2 {
-  label="Amazon Echo";    2 [label="Non-CVE info: Amazon Echo"];
-    3 [label="CVE-2018-19189"];
-    4 [label="CVE-2018-19187"];
-    5 [label="CVE-2018-11567"];
+  label="Google Home";    2 [label="Non-CVE info: Google Home"];
+    3 [label="CVE-2018-12716"];
   }
   subgraph cluster_3 {
-  label="Roku Media Player";    6 [label="CVE-2018-11314"];
+  label="Amazon Echo";    4 [label="Non-CVE info: Amazon Echo"];
+    5 [label="CVE-2018-19189"];
+    6 [label="CVE-2018-19187"];
+    7 [label="CVE-2018-11567"];
   }
   subgraph cluster_4 {
-  label="HP Inkjet";    7 [label="Non-CVE info: HP Inkjet"];
-    8 [label="CVE-2018-5925"];
-    9 [label="CVE-2018-5924"];
+  label="Roku Media Player";    8 [label="CVE-2018-11314"];
   }
   subgraph cluster_5 {
-  label="Attacker Targets";    10 [label="Amazon Echo:Root Privileges"];
-    11 [label="Cookies"];
-    12 [label="Credentials"];
-    13 [label="Privacy Breach"];
-    14 [label="this:Root Priv"];
-    15 [label="this:Config File"];
-    16 [label="HP Inkjet:Root Privileges"];
+  label="HP Inkjet";    9 [label="Non-CVE info: HP Inkjet"];
+    10 [label="CVE-2018-5925"];
+    11 [label="CVE-2018-5924"];
   }
-  1 -> 3 [label="XSS" color="black"];
-  1 -> 3 [label="XSS" color="black"];
-  1 -> 4 [label="XSS" color="black"];
-  1 -> 4 [label="XSS" color="black"];
-  1 -> 5 [label="Unprotected Expose" color="black"];
-  1 -> 6 [label="DNS Rebinding" color="black"];
-  1 -> 6 [label="DNS Rebinding" color="black"];
-  1 -> 8 [label="HP Inkjet:Buffer Overflow" color="black"];
-  1 -> 8 [label="HP Inkjet:Buffer Overflow" color="black"];
-  1 -> 9 [label="HP Inkjet:Buffer Overflow" color="black"];
-  1 -> 9 [label="HP Inkjet:Buffer Overflow" color="black"];
-  3 -> 2 [label="Credentials" color="yellow3"];
-  4 -> 2 [label="Credentials" color="yellow3"];
-  8 -> 2 [label="Credentials" color="orange2"];
-  9 -> 2 [label="Credentials" color="orange2"];
-  8 -> 7 [label="HP Inkjet:Root Privileges" color="orange2"];
-  9 -> 7 [label="HP Inkjet:Root Privileges" color="orange2"];
-  2 ->  10 [color="orange2"];
-  3 -> 11 [color="yellow3"];
-  3 -> 12 [color="yellow3"];
-  4 -> 11 [color="yellow3"];
-  4 -> 12 [color="yellow3"];
-  5 -> 13 [color="greenyellow"];
-  6 -> 14 [color="red3"];
-  6 -> 15 [color="red3"];
-  7 ->  13 [color="orange2"];
-  8 -> 12 [color="orange2"];
-  8 -> 16 [color="orange2"];
-  9 -> 12 [color="orange2"];
-  9 -> 16 [color="orange2"];
+  subgraph cluster_6 {
+  label="Belkin WeMo";    12 [label="CVE-2018-6692"];
+    13 [label="CVE-2013-6952"];
+    14 [label="CVE-2013-6951"];
+    15 [label="CVE-2013-6950"];
+    16 [label="CVE-2013-6949"];
+    17 [label="CVE-2013-6948"];
+    18 [label="Non-CVE Info"];
+  }
+  subgraph cluster_7 {
+  label="Attacker Targets";    19 [label="Google Account Access"];
+    20 [label="Physical Location"];
+    21 [label="Amazon Echo:Root Privileges"];
+    22 [label="Cookies"];
+    23 [label="Credentials"];
+    24 [label="Privacy Breach **Disputed**"];
+    25 [label="this:Root Priv"];
+    26 [label="this:Config File"];
+    27 [label="Privacy Breach"];
+    28 [label="HP Inkjet:Root Privileges"];
+    29 [label="Belkin WeMo:GPG Key"];
+    30 [label="Belkin WeMo:Root Privileges"];
+    31 [label="Remote Device Control:WeMo"];
+    32 [label="Remote WeMo Control"];
+  }
+  1 -> 3 [label="DNS Rebinding" color="black"];
+  1 -> 5 [label="XSS" color="black"];
+  1 -> 5 [label="XSS" color="black"];
+  1 -> 6 [label="XSS" color="black"];
+  1 -> 6 [label="XSS" color="black"];
+  1 -> 7 [label="Unprotected Expose" color="black"];
+  1 -> 8 [label="DNS Rebinding" color="black"];
+  1 -> 8 [label="DNS Rebinding" color="black"];
+  1 -> 10 [label="HP Inkjet:Buffer Overflow" color="black"];
+  1 -> 10 [label="HP Inkjet:Buffer Overflow" color="black"];
+  1 -> 11 [label="HP Inkjet:Buffer Overflow" color="black"];
+  1 -> 11 [label="HP Inkjet:Buffer Overflow" color="black"];
+  1 -> 12 [label="Belkin WeMo:Buffer Overflow" color="black"];
+  1 -> 12 [label="Belkin WeMo:Buffer Overflow" color="black"];
+  1 -> 14 [label="MITM" color="black"];
+  1 -> 15 [label="MITM" color="black"];
+  1 -> 16 [label="MITM" color="black"];
+  5 -> 2 [label="Credentials" color="yellow3"];
+  6 -> 2 [label="Credentials" color="yellow3"];
+  5 -> 4 [label="Credentials" color="yellow3"];
+  6 -> 4 [label="Credentials" color="yellow3"];
+  4 -> 18 [label="Amazon Echo:Root Privileges" color="orange2"];
+  10 -> 2 [label="Credentials" color="orange2"];
+  11 -> 2 [label="Credentials" color="orange2"];
+  10 -> 4 [label="Credentials" color="orange2"];
+  11 -> 4 [label="Credentials" color="orange2"];
+  10 -> 9 [label="HP Inkjet:Root Privileges" color="orange2"];
+  11 -> 9 [label="HP Inkjet:Root Privileges" color="orange2"];
+  12 -> 2 [label="Credentials" color="red3"];
+  17 -> 2 [label="Credentials" color="red3"];
+  12 -> 4 [label="Credentials" color="red3"];
+  17 -> 4 [label="Credentials" color="red3"];
+  12 -> 13 [label="Belkin WeMo:GPG Key" color="red3"];
+  17 -> 13 [label="Belkin WeMo:GPG Key" color="red3"];
+  2 ->  19 [color="orange2"];
+  3 -> 20 [color="greenyellow"];
+  4 ->  21 [color="orange2"];
+  5 -> 22 [color="yellow3"];
+  5 -> 23 [color="yellow3"];
+  6 -> 22 [color="yellow3"];
+  6 -> 23 [color="yellow3"];
+  7 -> 24 [color="greenyellow"];
+  8 -> 25 [color="red3"];
+  8 -> 26 [color="red3"];
+  9 ->  27 [color="orange2"];
+  10 -> 23 [color="orange2"];
+  10 -> 28 [color="orange2"];
+  11 -> 23 [color="orange2"];
+  11 -> 28 [color="orange2"];
+  12 -> 23 [color="red3"];
+  12 -> 29 [color="red3"];
+  13 -> 30 [color="purple4"];
+  14 -> 30 [color="red3"];
+  15 -> 30 [color="red3"];
+  16 -> 30 [color="purple4"];
+  17 -> 23 [color="red3"];
+  17 -> 29 [color="red3"];
+  17 -> 31 [color="red3"];
+  18 ->  32 [color="orange2"];
   label = "\nAttack Circuit: Impact\n";  fontsize=24;
 }

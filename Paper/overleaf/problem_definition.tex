@@ -1,0 +1,40 @@
+\section{Problem Definition}
+\label{sec:problem_definition}
+
+Given a network of IoT devices and any additional knowledge about them (e.g., from CVEs or the device specification), the problem addressed by our work is to compute a security state triple $\langle R, E, I \rangle$ corresponding to the risk triple, exploitability score, and impact scores for each vulnerability, device, and the network. Exploitability is a measure of how difficult it would be for an adversary to compromise the object, and the impact is a measure of the level of harm or compromise an adversary could inflict in the case of vulnerability exploitation. Risk is meant to be interpreted as a holistic measure of the security state of the CVE, device, or network, which evaluates the confidentiality, integrity, and availability risks of the object's potential vulnerabilities: $R = \langle R_{Conf}, R_{Integ}, R_{Avail} \rangle$. $R_{Conf}$ measures the impact of a successfully exploited vulnerability on the confidentiality of information managed by the device or network. A value of \textit{Low} for $R_{Conf}$ means that there is a low risk of disclosure of such information to unauthorized individuals or systems. $R_{Integ}$ measures the impact of a successfully exploited vulnerability on the integrity of the system. For instance, if $R_{Integ}$ has a value of \textit{Complete}, an unauthorized user may be able to easily gain root access to a device following the exploitation of an associated vulnerability. $R_{Avail}$ measures the impact of a successfully exploited vulnerability on the availability of the devices or networked services involved. This may include disk space, bandwidth/latency, and the uptime of the devices and components involved. Having a high availability risk would be particularly alarming for medical IoT networks, where lives depend on device fidelity and responsiveness.
+
+The problem also incorporates the generation of a representation of the scored system for further assessment, including identifying possible attack paths that an adversary may traverse to carry out multi-stage attacks on the network. This may include network visuals, analysis-ready representations, lists of likely attack paths with respect to different metrics, and flow network problem solutions for downstream score computation. Such a representation would provide insights into otherwise very complex and unique IoT networks, and would give improved information for our security state triple.
+
+Because vulnerabilities often stem from the way a system is used, the problem additionally incorporates data learned from the traffic of a particular device and holistic network behaviors. For instance, anomalous traffic volume can often be an indication of Denial-of-Service (DoS) attacks, and instances when a device is suddenly receiving responses from or sending requests to a blacklisted IP address could factor into our security state triple. This broadens the scope of our security state assessment and could provide strategies for real-time countermeasures against adversaries.
+
+% some notes based on an earlier conversation
+
+%problem definition:
+%framework in problem definition
+%risk score
+
+%proposed method:
+%attack path
+%how to come up with them
+%nlp
+
+%whitebox: collecting logs
+%what parameters to look at?
+
+%experimental graph:
+%risk score of each device
+%graph representation
+%risk over time
+%independent of each other
+%multiple devices on the network: score of each device over time, score of the network
+
+%logs: whitebox/behavioral
+%experimental results: Output circuit constructions, device score and how it changes with introduction of new CVEs, behavioral scores, other devices
+
+%combined: overall
+
+% Why the scores change based on multiple devices
+
+% A triple: <Risk, Exp, Impact>
+
+% Risk types: eg. having high avail risk bad for medical IoT, confidentiality bad for GDPR,

@@ -12,6 +12,7 @@
 \usepackage{algorithm}% http://ctan.org/pkg/algorithms
 \usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
 \usepackage{color}
+\usepackage{booktabs}
 
 %this makes our life easy
 \newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
@@ -22,6 +23,9 @@
 \newcommand{\TODO}[1]{\textcolor{red}{#1}}
 \newcommand{\todo}[1]{\textcolor{red}{#1}}
 
+% other packages used
+\usepackage{framed}
+
 %change font size in algorithm
 \makeatletter
 \renewcommand{\ALG@beginalgorithmic}{\footnotesize}
@@ -30,24 +34,34 @@
 \begin{document}
 %
 % paper title
-\title{Attack Circuits for the Security Evaluation of Smart Homes and other IoT Networks}
+\title{How Secure is Your IoT Network?}
+%\title{Attack Circuits for the Security Evaluation of Smart Homes and Other IoT Networks}
 
-
-\author{ }
+\author{\IEEEauthorblockN{
+Joshua Payne\IEEEauthorrefmark{1}
+Karan K. Budhraja\IEEEauthorrefmark{2} 
+Ashish Kundu\IEEEauthorrefmark{3}
+}
+\IEEEauthorblockA{\IEEEauthorrefmark{1}Stanford University, CA, USA Email: joshp007@stanford.edu}
+\IEEEauthorblockA{\IEEEauthorrefmark{2}University of Maryland, Baltimore County, MD, USA Email: karanb1@umbc.edu}
+\IEEEauthorblockA{\IEEEauthorrefmark{3}IBM Thomas J. Watson Research Center, Yorktown Heights, NY, USA Email: akundu@us.ibm.com}
+}
 
 % make the title area
 \maketitle
 
 \input{abstract}
 \input{introduction}
-\input{overview}
-%\input{relatedworks}
-%\input{conclusion}
+\input{related_work}
+\input{problem_definition}
+\input{proposed_method}
+\input{implementation.tex}
+\input{evaluation}
+\input{conclusion}
 
 %the bib
 %\footnotesize
-\bibliographystyle{plain}
-\bibliography{paper_ref}
-
-
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,references}
+%\input{appendix.tex}
 \end{document}

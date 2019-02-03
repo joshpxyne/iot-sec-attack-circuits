@@ -1,0 +1,19 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{Related Work}{}% 2
+\BOOKMARK [1][-]{section.3}{Problem Definition}{}% 3
+\BOOKMARK [1][-]{section.4}{Proposed Method}{}% 4
+\BOOKMARK [2][-]{subsection.4.1}{Circuit Construction}{section.4}% 5
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Input/Output Extraction}{subsection.4.1}% 6
+\BOOKMARK [3][-]{subsubsection.4.1.2}{Graph Composition}{subsection.4.1}% 7
+\BOOKMARK [2][-]{subsection.4.2}{Network Composition Analysis}{section.4}% 8
+\BOOKMARK [2][-]{subsection.4.3}{Network Traffic Analysis}{section.4}% 9
+\BOOKMARK [2][-]{subsection.4.4}{Network Flows and Attack Path Analysis}{section.4}% 10
+\BOOKMARK [3][-]{subsubsection.4.4.1}{Impact Paths}{subsection.4.4}% 11
+\BOOKMARK [3][-]{subsubsection.4.4.2}{Exploitability Paths}{subsection.4.4}% 12
+\BOOKMARK [3][-]{subsubsection.4.4.3}{Risk Flow Evaluation}{subsection.4.4}% 13
+\BOOKMARK [1][-]{section.5}{Implementation}{}% 14
+\BOOKMARK [2][-]{subsection.5.1}{Our System}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.2}{Our Scoring Method}{section.5}% 16
+\BOOKMARK [1][-]{section.6}{Evaluation}{}% 17
+\BOOKMARK [1][-]{section.7}{Conclusion}{}% 18
+\BOOKMARK [1][-]{section*.1}{References}{}% 19

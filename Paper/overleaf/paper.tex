@@ -1,0 +1,67 @@
+\documentclass[10pt, conference]{IEEEtran}
+
+%some packages we might use
+\usepackage{subfigure}
+\usepackage{graphicx}
+\usepackage{graphicx, subfigure, epsfig, multirow}
+% \usepackage[urlbordercolor={1 1 1}, linkbordercolor={1 1 1}]{hyperref}
+\usepackage[urlbordercolor={1 1 1} ]{hyperref}
+\usepackage[hyphenbreaks]{breakurl}
+\usepackage{amssymb,amsmath}
+% \usepackage[ruled,vlined]{algorithm2e}
+\usepackage{algorithm}% http://ctan.org/pkg/algorithms
+\usepackage{algpseudocode}% http://ctan.org/pkg/algorithmicx
+\usepackage{color}
+\usepackage{booktabs}
+
+%this makes our life easy
+\newcommand{\tabincell}[2]{\begin{tabular}{@{}#1@{}}#2\end{tabular}}
+\newcommand{\code}[1]{{\fontfamily{cmtt}\fontseries{m}\fontshape{n}\selectfont\footnotesize{#1}}}
+\newcommand{\captionsmall}[1]{{\selectfont\small{#1}}}
+
+\newcommand{\ks}[1]{\textcolor{red}{[KS: #1]}}
+\newcommand{\TODO}[1]{\textcolor{red}{#1}}
+\newcommand{\todo}[1]{\textcolor{red}{#1}}
+
+% other packages used
+\usepackage{framed}
+
+%change font size in algorithm
+\makeatletter
+\renewcommand{\ALG@beginalgorithmic}{\footnotesize}
+\makeatother
+
+\begin{document}
+%
+% paper title
+\title{How Secure is Your IoT Network?}
+%\title{Attack Circuits for the Security Evaluation of Smart Homes and Other IoT Networks}
+
+\author{\IEEEauthorblockN{
+Joshua Payne\IEEEauthorrefmark{1}
+Karan K. Budhraja\IEEEauthorrefmark{2} 
+Ashish Kundu\IEEEauthorrefmark{3}
+}
+\IEEEauthorblockA{\IEEEauthorrefmark{1}Stanford University, CA, USA Email: joshp007@stanford.edu}
+\IEEEauthorblockA{\IEEEauthorrefmark{2}University of Maryland, Baltimore County, MD, USA Email: karanb1@umbc.edu}
+\IEEEauthorblockA{\IEEEauthorrefmark{3}IBM Thomas J. Watson Research Center, Yorktown Heights, NY, USA Email: akundu@us.ibm.com}
+}
+
+% make the title area
+\maketitle
+
+\input{abstract}
+\input{introduction}
+\input{related_work}
+\input{problem_definition}
+\input{proposed_method}
+\input{implementation.tex}
+\input{evaluation}
+\input{conclusion}
+
+%the bib
+%\footnotesize
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,references}
+%\input{appendix.tex}
+\end{document}

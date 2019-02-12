@@ -186,6 +186,10 @@ def do_pytextrank(data):
             # cleanup
             os.system('rm -f sub_item.json stage1_output.json stage2_output.json graph.dot')
 
+            # get input and output
+            iOInput = None
+            iOOutput = None
+            
             # input filter results based on pos
             # this is a heuristic
             filteredRlLists = [x for x in rlLists if 'nn' not in x[-2]]
@@ -196,8 +200,9 @@ def do_pytextrank(data):
                 [heuristic, iOItem] = do_heuristic(subItem, filteredRlLists)
                 print('heuristic:', heuristic)
                 print('i/o input:', iOItem)
-
-            # input filter results based on pos
+                iOInput = iOItem
+                
+            # output filter results based on pos
             # this is a heuristic
             filteredRlLists = [x for x in rlLists if 'nn' in x[-2]]
             if(len(filteredRlLists) == 0):
@@ -207,14 +212,24 @@ def do_pytextrank(data):
                 [heuristic, iOItem] = do_heuristic(subItem, filteredRlLists)
                 print('heuristic:', heuristic)
                 print('i/o output:', iOItem)
-
+                iOOutput = iOItem
+                
             print('###############')
 
+            # add i/o pair if any
+            if(iOInput and iOOutput):
+                subItem['nlp i/o'] = iOInput  + '->' + iOOutput
 
+    return data
+                
 def main():
     # accumulate and process data            
     [data, allCleanedDescriptions] = load_data()
     data = do_tf_idf(data, allCleanedDescriptions)
-    do_pytextrank(data)
+    data = do_pytextrank(data)
 
+    # write to file as json
+    with open('nlp_descriptions_io.json', 'w') as outFile:
+        json.dump(data, outFile)
+    
 main()

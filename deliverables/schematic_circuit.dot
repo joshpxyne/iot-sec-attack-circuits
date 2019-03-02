@@ -7,132 +7,359 @@ digraph G {
   node  [shape=ellipse, width=0.3, height=0.3]
   0 -> 1 [label="Some router/network vulnerability"];
   subgraph cluster_1 {
-  label="Router";  0 [label="Attacker 1", shape=Mdiamond];
-    1 [label="Non-CVE info: Router"];
+  label="iSmartAlarm CubeOne";  0 [label="Attacker 1", shape=Mdiamond];
+    1 [label="CVE-2017-7730"];
+    2 [label="CVE-2017-7729"];
+    3 [label="CVE-2017-7728"];
+    4 [label="CVE-2017-7726"];
+    5 [label="CVE-2017-13664"];
+    6 [label="CVE-2017-13663"];
+    7 [label="CVE-2018-16222"];
+    8 [label="CVE-2018-16224"];
   }
   subgraph cluster_2 {
-  label="Google Home";    2 [label="Non-CVE info: Google Home"];
-    3 [label="CVE-2018-12716"];
+  label="uControl Smart Home Automation";    9 [label="CVE-2014-4892"];
   }
   subgraph cluster_3 {
-  label="Amazon Echo";    4 [label="Non-CVE info: Amazon Echo"];
-    5 [label="CVE-2018-19189"];
-    6 [label="CVE-2018-19187"];
-    7 [label="CVE-2018-11567"];
+  label="Zipato Zipabox Smart Home Controller";    10 [label="CVE-2018-15125"];
+    11 [label="CVE-2018-15124"];
+    12 [label="CVE-2018-15123"];
   }
   subgraph cluster_4 {
-  label="Roku Media Player";    8 [label="CVE-2018-11314"];
+  label="Samsung SmartThings Hub";    13 [label="CVE-2018-3915"];
+    14 [label="CVE-2018-3865"];
+    15 [label="CVE-2018-3864"];
+    16 [label="CVE-2018-3875"];
   }
   subgraph cluster_5 {
-  label="HP Inkjet";    9 [label="Non-CVE info: HP Inkjet"];
-    10 [label="CVE-2018-5925"];
-    11 [label="CVE-2018-5924"];
+  label="Mimo Baby 2";    17 [label="CVE-2018-10825"];
   }
   subgraph cluster_6 {
-  label="Belkin WeMo";    12 [label="CVE-2018-6692"];
-    13 [label="CVE-2013-6952"];
-    14 [label="CVE-2013-6951"];
-    15 [label="CVE-2013-6950"];
-    16 [label="CVE-2013-6949"];
-    17 [label="CVE-2013-6948"];
-    18 [label="Non-CVE Info"];
+  label="HP Inkjet";    18 [label="Non-CVE info: HP Inkjet"];
+    19 [label="CVE-2018-5925"];
+    20 [label="CVE-2018-5924"];
   }
   subgraph cluster_7 {
-  label="Attacker Targets";    19 [label="Google Account Access"];
-    20 [label="Physical Location"];
-    21 [label="Amazon Echo:Root Privileges"];
-    22 [label="Cookies"];
-    23 [label="Credentials"];
-    24 [label="Privacy Breach **Disputed**"];
-    25 [label="this:Root Priv"];
-    26 [label="this:Config File"];
-    27 [label="Privacy Breach"];
-    28 [label="HP Inkjet:Root Privileges"];
-    29 [label="Belkin WeMo:GPG Key"];
-    30 [label="Belkin WeMo:Root Privileges"];
-    31 [label="Remote Device Control:WeMo"];
-    32 [label="Remote WeMo Control"];
+  label="Wink Smarthome";    21 [label="CVE-2017-5249"];
   }
-  1 -> 3 [label="DNS Rebinding" color="black"];
-  1 -> 3 [label="DNS Rebinding" color="black"];
-  1 -> 5 [label="XSS" color="black"];
-  1 -> 5 [label="XSS" color="black"];
-  1 -> 5 [label="XSS" color="black"];
-  1 -> 5 [label="XSS" color="black"];
-  1 -> 6 [label="XSS" color="black"];
-  1 -> 6 [label="XSS" color="black"];
-  1 -> 6 [label="XSS" color="black"];
-  1 -> 6 [label="XSS" color="black"];
-  1 -> 7 [label="Unprotected Expose" color="black"];
-  1 -> 7 [label="Unprotected Expose" color="black"];
-  1 -> 8 [label="DNS Rebinding" color="black"];
-  1 -> 8 [label="DNS Rebinding" color="black"];
-  1 -> 8 [label="DNS Rebinding" color="black"];
-  1 -> 8 [label="DNS Rebinding" color="black"];
-  1 -> 10 [label="HP Inkjet:Buffer Overflow" color="black"];
-  1 -> 10 [label="HP Inkjet:Buffer Overflow" color="black"];
-  1 -> 10 [label="HP Inkjet:Buffer Overflow" color="black"];
-  1 -> 10 [label="HP Inkjet:Buffer Overflow" color="black"];
-  1 -> 11 [label="HP Inkjet:Buffer Overflow" color="black"];
-  1 -> 11 [label="HP Inkjet:Buffer Overflow" color="black"];
-  1 -> 11 [label="HP Inkjet:Buffer Overflow" color="black"];
-  1 -> 11 [label="HP Inkjet:Buffer Overflow" color="black"];
-  1 -> 12 [label="Belkin WeMo:Buffer Overflow" color="black"];
-  1 -> 12 [label="Belkin WeMo:Buffer Overflow" color="black"];
-  1 -> 12 [label="Belkin WeMo:Buffer Overflow" color="black"];
-  1 -> 12 [label="Belkin WeMo:Buffer Overflow" color="black"];
-  1 -> 14 [label="MITM" color="black"];
-  1 -> 14 [label="MITM" color="black"];
-  1 -> 15 [label="MITM" color="black"];
-  1 -> 15 [label="MITM" color="black"];
-  1 -> 16 [label="MITM" color="black"];
-  1 -> 16 [label="MITM" color="black"];
-  5 -> 2 [label="Credentials" color="black"];
-  6 -> 2 [label="Credentials" color="black"];
-  5 -> 4 [label="Credentials" color="black"];
-  6 -> 4 [label="Credentials" color="black"];
-  4 -> 18 [label="Amazon Echo:Root Privileges" color="black"];
-  4 -> 18 [label="Amazon Echo:Root Privileges" color="black"];
-  10 -> 2 [label="Credentials" color="black"];
-  11 -> 2 [label="Credentials" color="black"];
-  10 -> 4 [label="Credentials" color="black"];
-  11 -> 4 [label="Credentials" color="black"];
-  10 -> 9 [label="HP Inkjet:Root Privileges" color="black"];
-  11 -> 9 [label="HP Inkjet:Root Privileges" color="black"];
-  12 -> 2 [label="Credentials" color="black"];
-  17 -> 2 [label="Credentials" color="black"];
-  12 -> 4 [label="Credentials" color="black"];
-  17 -> 4 [label="Credentials" color="black"];
-  12 -> 13 [label="Belkin WeMo:GPG Key" color="black"];
-  17 -> 13 [label="Belkin WeMo:GPG Key" color="black"];
-  2 -> 19 [color="black"];
-  2 ->  19 [color="black"];
-  3 -> 20 [color="black"];
-  4 -> 21 [color="black"];
-  4 ->  21 [color="black"];
-  5 -> 22 [color="black"];
-  5 -> 23 [color="black"];
-  6 -> 22 [color="black"];
-  6 -> 23 [color="black"];
-  7 -> 24 [color="black"];
-  8 -> 25 [color="black"];
-  8 -> 26 [color="black"];
-  9 -> 27 [color="black"];
-  9 ->  27 [color="black"];
-  10 -> 23 [color="black"];
-  10 -> 28 [color="black"];
-  11 -> 23 [color="black"];
-  11 -> 28 [color="black"];
-  12 -> 23 [color="black"];
-  12 -> 29 [color="black"];
-  13 -> 30 [color="black"];
-  14 -> 30 [color="black"];
-  15 -> 30 [color="black"];
-  16 -> 30 [color="black"];
-  17 -> 23 [color="black"];
-  17 -> 29 [color="black"];
-  17 -> 31 [color="black"];
-  18 -> 32 [color="black"];
-  18 ->  32 [color="black"];
+  subgraph cluster_8 {
+  label="iTrack Easy";    22 [label="CVE-2016-6544"];
+    23 [label="CVE-2016-6543"];
+  }
+  subgraph cluster_9 {
+  label="Insteon Hub";    24 [label="CVE-2017-5251"];
+    25 [label="CVE-2017-5250"];
+  }
+  subgraph cluster_10 {
+  label="iBaby M3S";    26 [label="CVE-2015-2887"];
+  }
+  subgraph cluster_11 {
+  label="Papenmeier WiFi Baby Monitor ";    27 [label="CVE-2018-7661"];
+  }
+  subgraph cluster_12 {
+  label="Hoermann BiSecur";    28 [label="CVE-2015-7908"];
+  }
+  subgraph cluster_13 {
+  label="Belkin WeMo";    29 [label="CVE-2018-6692"];
+    30 [label="CVE-2013-6952"];
+    31 [label="CVE-2013-6951"];
+    32 [label="CVE-2013-6950"];
+    33 [label="CVE-2013-6949"];
+    34 [label="CVE-2013-6948"];
+    35 [label="Non-CVE Info"];
+  }
+  subgraph cluster_14 {
+  label="Summer Baby Zoom Wifi Monitor";    36 [label="CVE-2015-2889"];
+    37 [label="CVE-2015-2888"];
+  }
+  subgraph cluster_15 {
+  label="Philips Hue";    38 [label="CVE-2017-14797"];
+  }
+  subgraph cluster_16 {
+  label="Cisco IoT Field Network Director";    39 [label="CVE-2018-0270"];
+  }
+  subgraph cluster_17 {
+  label="iBaby M6";    40 [label="CVE-2015-2886"];
+  }
+  subgraph cluster_18 {
+  label="Netatmo Indoor Module";    41 [label="CVE-2015-1600"];
+  }
+  subgraph cluster_19 {
+  label="Amazon Echo";    42 [label="Non-CVE info: Amazon Echo"];
+    43 [label="CVE-2018-19189"];
+    44 [label="CVE-2018-19187"];
+    45 [label="CVE-2018-11567"];
+  }
+  subgraph cluster_20 {
+  label="Honeywell Midas gas detector";    46 [label="CVE-2017-17910"];
+    47 [label="CVE-2015-7907"];
+  }
+  subgraph cluster_21 {
+  label="TRENDnet WiFi Baby Cam";    48 [label="CVE-2015-2880"];
+  }
+  subgraph cluster_22 {
+  label="TrackR Bravo";    49 [label="CVE-2016-6541"];
+    50 [label="CVE-2016-6540"];
+    51 [label="CVE-2016-6539"];
+    52 [label="CVE-2016-6538"];
+  }
+  subgraph cluster_23 {
+  label="Router";    53 [label="Non-CVE info: Router"];
+  }
+  subgraph cluster_24 {
+  label="Ring";    54 [label="CVE-2015-4400"];
+  }
+  subgraph cluster_25 {
+  label="Lens Peek-a-View";    55 [label="CVE-2015-2885"];
+  }
+  subgraph cluster_26 {
+  label="Sonos Speaker";    56 [label="CVE-2018-11316"];
+  }
+  subgraph cluster_27 {
+  label="D-Link Baby Monitor DCS 825-L";    57 [label="CVE-2018-18767"];
+    58 [label="CVE-2018-18442"];
+    59 [label="CVE-2018-18441"];
+    60 [label="CVE-2017-11564"];
+    61 [label="CVE-2017-11563"];
+  }
+  subgraph cluster_28 {
+  label="Osram Lightify Pro";    62 [label="CVE-2016-5059"];
+    63 [label="CVE-2016-5058"];
+    64 [label="CVE-2016-5057"];
+    65 [label="CVE-2016-5056"];
+    66 [label="CVE-2016-5055"];
+    67 [label="CVE-2016-5053"];
+    68 [label="CVE-2016-5051"];
+  }
+  subgraph cluster_29 {
+  label="Google Home";    69 [label="Non-CVE info: Google Home"];
+    70 [label="CVE-2018-12716"];
+  }
+  subgraph cluster_30 {
+  label="Gynoii Baby Monitor";    71 [label="CVE-2015-2881"];
+  }
+  subgraph cluster_31 {
+  label="Roku Media Player";    72 [label="CVE-2018-11314"];
+  }
+  subgraph cluster_32 {
+  label="Philips In.Sight";    73 [label="CVE-2015-2884"];
+    74 [label="CVE-2015-2883"];
+    75 [label="CVE-2015-2882"];
+  }
+  subgraph cluster_33 {
+  label="QBee Cam";    76 [label="CVE-2018-16223"];
+  }
+  subgraph cluster_34 {
+  label="Radio Thermostat CT50";    77 [label="CVE-2018-11315"];
+    78 [label="CVE-2013-4860"];
+  }
+  subgraph cluster_35 {
+  label="Attacker Targets";    79 [label="Zipato:Root Privileges"];
+    80 [label="Privacy Breach"];
+    81 [label="Credentials"];
+    82 [label="HP Inkjet:Root Privileges"];
+    83 [label="Belkin WeMo:GPG Key"];
+    84 [label="Belkin WeMo:Root Privileges"];
+    85 [label="Remote Device Control:WeMo"];
+    86 [label="Remote WeMo Control"];
+    87 [label="Amazon Echo:Root Privileges"];
+    88 [label="Cookies"];
+    89 [label="Privacy Breach **Disputed**"];
+    90 [label="MITM"];
+    91 [label="DoS Attack"];
+    92 [label="Belkin WeMo:Buffer Overflow"];
+    93 [label="HP Inkjet:Buffer Overflow"];
+    94 [label="XSS"];
+    95 [label="Unprotected Expose"];
+    96 [label="DNS Rebinding"];
+    97 [label="Unencrypted Storage"];
+    98 [label="CSRF"];
+    99 [label="Weak Encryption"];
+    100 [label="misc"];
+    101 [label="D-Link Baby Monitor DCS 825-L:Availability"];
+    102 [label="D-Link Baby Monitor DCS 825-L:Config File"];
+    103 [label="D-Link Baby Monitor DCS 825-L:Root Privileges"];
+    104 [label="Google Account Access"];
+    105 [label="Physical Location"];
+    106 [label="Gynoii Baby Monitor:Admin Privileges"];
+    107 [label="this:Root Priv"];
+    108 [label="this:Config File"];
+    109 [label="this:Root Privileges"];
+  }
+  19 -> 18 [label="HP Inkjet:Root Privileges" color="black"];
+  20 -> 18 [label="HP Inkjet:Root Privileges" color="black"];
+  19 -> 42 [label="Credentials" color="black"];
+  20 -> 42 [label="Credentials" color="black"];
+  19 -> 60 [label="Credentials" color="black"];
+  20 -> 60 [label="Credentials" color="black"];
+  19 -> 69 [label="Credentials" color="black"];
+  20 -> 69 [label="Credentials" color="black"];
+  29 -> 30 [label="Belkin WeMo:GPG Key" color="black"];
+  34 -> 30 [label="Belkin WeMo:GPG Key" color="black"];
+  29 -> 42 [label="Credentials" color="black"];
+  34 -> 42 [label="Credentials" color="black"];
+  29 -> 60 [label="Credentials" color="black"];
+  34 -> 60 [label="Credentials" color="black"];
+  29 -> 69 [label="Credentials" color="black"];
+  34 -> 69 [label="Credentials" color="black"];
+  42 -> 35 [label="Amazon Echo:Root Privileges" color="black"];
+  42 -> 35 [label="Amazon Echo:Root Privileges" color="black"];
+  43 -> 42 [label="Credentials" color="black"];
+  44 -> 42 [label="Credentials" color="black"];
+  43 -> 60 [label="Credentials" color="black"];
+  44 -> 60 [label="Credentials" color="black"];
+  43 -> 69 [label="Credentials" color="black"];
+  44 -> 69 [label="Credentials" color="black"];
+  53 -> 11 [label="Weak Encryption" color="black"];
+  53 -> 11 [label="Weak Encryption" color="black"];
+  53 -> 19 [label="HP Inkjet:Buffer Overflow" color="black"];
+  53 -> 19 [label="HP Inkjet:Buffer Overflow" color="black"];
+  53 -> 19 [label="HP Inkjet:Buffer Overflow" color="black"];
+  53 -> 19 [label="HP Inkjet:Buffer Overflow" color="black"];
+  53 -> 20 [label="HP Inkjet:Buffer Overflow" color="black"];
+  53 -> 20 [label="HP Inkjet:Buffer Overflow" color="black"];
+  53 -> 20 [label="HP Inkjet:Buffer Overflow" color="black"];
+  53 -> 20 [label="HP Inkjet:Buffer Overflow" color="black"];
+  53 -> 29 [label="Belkin WeMo:Buffer Overflow" color="black"];
+  53 -> 29 [label="Belkin WeMo:Buffer Overflow" color="black"];
+  53 -> 29 [label="Belkin WeMo:Buffer Overflow" color="black"];
+  53 -> 29 [label="Belkin WeMo:Buffer Overflow" color="black"];
+  53 -> 31 [label="MITM" color="black"];
+  53 -> 31 [label="MITM" color="black"];
+  53 -> 32 [label="MITM" color="black"];
+  53 -> 32 [label="MITM" color="black"];
+  53 -> 33 [label="MITM" color="black"];
+  53 -> 33 [label="MITM" color="black"];
+  53 -> 43 [label="XSS" color="black"];
+  53 -> 43 [label="XSS" color="black"];
+  53 -> 43 [label="XSS" color="black"];
+  53 -> 43 [label="XSS" color="black"];
+  53 -> 44 [label="XSS" color="black"];
+  53 -> 44 [label="XSS" color="black"];
+  53 -> 44 [label="XSS" color="black"];
+  53 -> 44 [label="XSS" color="black"];
+  53 -> 45 [label="Unprotected Expose" color="black"];
+  53 -> 45 [label="Unprotected Expose" color="black"];
+  53 -> 61 [label="Unprotected Expose" color="black"];
+  53 -> 61 [label="Unprotected Expose" color="black"];
+  53 -> 70 [label="DNS Rebinding" color="black"];
+  53 -> 70 [label="DNS Rebinding" color="black"];
+  53 -> 71 [label="Unprotected Expose" color="black"];
+  53 -> 71 [label="Unprotected Expose" color="black"];
+  53 -> 72 [label="DNS Rebinding" color="black"];
+  53 -> 72 [label="DNS Rebinding" color="black"];
+  53 -> 72 [label="DNS Rebinding" color="black"];
+  53 -> 72 [label="DNS Rebinding" color="black"];
+  53 -> 73 [label="Unprotected Expose" color="black"];
+  53 -> 73 [label="Unprotected Expose" color="black"];
+  53 -> 74 [label="XSS" color="black"];
+  53 -> 74 [label="XSS" color="black"];
+  53 -> 74 [label="XSS" color="black"];
+  53 -> 74 [label="XSS" color="black"];
+  53 -> 75 [label="Unprotected Expose" color="black"];
+  53 -> 75 [label="Unprotected Expose" color="black"];
+  57 -> 42 [label="Credentials" color="black"];
+  57 -> 42 [label="Credentials" color="black"];
+  57 -> 60 [label="Credentials" color="black"];
+  57 -> 60 [label="Credentials" color="black"];
+  57 -> 69 [label="Credentials" color="black"];
+  57 -> 69 [label="Credentials" color="black"];
+  73 -> 42 [label="Credentials" color="black"];
+  74 -> 42 [label="Credentials" color="black"];
+  73 -> 60 [label="Credentials" color="black"];
+  74 -> 60 [label="Credentials" color="black"];
+  73 -> 69 [label="Credentials" color="black"];
+  74 -> 69 [label="Credentials" color="black"];
+  5 -> 81 [color="black"];
+  7 -> 81 [color="black"];
+  8 -> 81 [color="black"];
+  9 -> 81 [color="black"];
+  11 -> 79 [color="black"];
+  11 -> 81 [color="black"];
+  12 -> 79 [color="black"];
+  13 -> 81 [color="black"];
+  18 -> 80 [color="black"];
+  18 ->  80 [color="black"];
+  19 -> 81 [color="black"];
+  19 -> 82 [color="black"];
+  19 -> 81 [color="black"];
+  19 -> 82 [color="black"];
+  20 -> 81 [color="black"];
+  20 -> 82 [color="black"];
+  20 -> 81 [color="black"];
+  21 -> 81 [color="black"];
+  24 -> 81 [color="black"];
+  29 -> 81 [color="black"];
+  29 -> 83 [color="black"];
+  29 -> 84 [color="black"];
+  30 -> 84 [color="black"];
+  30 -> 84 [color="black"];
+  31 -> 84 [color="black"];
+  31 -> 84 [color="black"];
+  32 -> 84 [color="black"];
+  32 -> 84 [color="black"];
+  33 -> 84 [color="black"];
+  33 -> 84 [color="black"];
+  34 -> 81 [color="black"];
+  34 -> 83 [color="black"];
+  34 -> 85 [color="black"];
+  34 -> 81 [color="black"];
+  35 -> 86 [color="black"];
+  35 ->  86 [color="black"];
+  40 -> 81 [color="black"];
+  41 -> 81 [color="black"];
+  42 -> 87 [color="black"];
+  42 ->  87 [color="black"];
+  43 -> 88 [color="black"];
+  43 -> 81 [color="black"];
+  43 -> 81 [color="black"];
+  44 -> 88 [color="black"];
+  44 -> 81 [color="black"];
+  44 -> 81 [color="black"];
+  45 -> 89 [color="black"];
+  45 -> 89 [color="black"];
+  46 -> 81 [color="black"];
+  47 -> 81 [color="black"];
+  52 -> 81 [color="black"];
+  54 -> 81 [color="black"];
+  55 -> 81 [color="black"];
+  57 -> 81 [color="black"];
+  57 ->  81 [color="black"];
+  57 -> 81 [color="black"];
+  57 ->  81 [color="black"];
+  58 -> 101 [color="black"];
+  58 ->  101 [color="black"];
+  58 -> 101 [color="black"];
+  58 ->  101 [color="black"];
+  59 -> 102 [color="black"];
+  59 ->  102 [color="black"];
+  59 -> 102 [color="black"];
+  59 ->  102 [color="black"];
+  60 -> 103 [color="black"];
+  60 -> 103 [color="black"];
+  61 -> 103 [color="black"];
+  61 -> 103 [color="black"];
+  62 -> 81 [color="black"];
+  64 -> 81 [color="black"];
+  66 -> 81 [color="black"];
+  69 -> 104 [color="black"];
+  69 ->  104 [color="black"];
+  70 -> 105 [color="black"];
+  70 -> 105 [color="black"];
+  71 -> 106 [color="black"];
+  71 -> 106 [color="black"];
+  72 -> 107 [color="black"];
+  72 -> 108 [color="black"];
+  72 -> 107 [color="black"];
+  72 -> 108 [color="black"];
+  73 -> 81 [color="black"];
+  73 -> 81 [color="black"];
+  74 -> 88 [color="black"];
+  74 -> 81 [color="black"];
+  74 -> 88 [color="black"];
+  74 -> 81 [color="black"];
+  75 -> 109 [color="black"];
+  75 -> 109 [color="black"];
+  76 -> 81 [color="black"];
   label = "\nAttack Circuit: Schematic\n";  fontsize=24;
 }

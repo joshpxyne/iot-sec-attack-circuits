@@ -78,7 +78,7 @@ base_risk_availability = vector["Amazon Echo"][2]["base"]*availability[vector["A
 base_risk_integrity = vector["Amazon Echo"][2]["base"]*integrity[vector["Amazon Echo"][2]["integrityImpact"]]
 base_risk_confidentiality = vector["Amazon Echo"][2]["base"]*confidentiality[vector["Amazon Echo"][2]["confidentialityImpact"]]
 
-echo_one_exp = base_exploitability*behavioral_uptime["rarely_online"]*behavioral_ssl["not_encrypted"]
+echo_one_exp = base_exploitability*behavioral_uptime["frequently_online"]*behavioral_ssl["not_encrypted"]
 echo_one_imp = base_impact*behavioral_blacklisted_ip["not_accessed"]
 
 print "Echo exploitability: ", math.tanh(echo_one_exp/100.0), "Echo impact: ", math.tanh(echo_one_imp/100.0), "Echo risk confidentiality: ", math.tanh(base_risk_confidentiality/100), "Echo risk integrity: ", math.tanh(base_risk_integrity/100), "Echo risk avalilability: ", math.tanh(base_risk_availability/100)

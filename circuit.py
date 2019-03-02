@@ -1,5 +1,6 @@
 '''
 $ python circuit.py -d "Router,<device_1>,<device_2>,...,<device_n>"
+or -a "T" (sorry, I'm lazy)
 '''
 
 import request
@@ -7,7 +8,7 @@ import json
 import random
 import networkx as nx
 from networkx.drawing.nx_agraph import graphviz_layout
-import snap
+# import snap
 import pydot
 import collections
 import itertools
@@ -74,8 +75,8 @@ def buildCircuit(devices,vector):
     ### set up circuit ###
 
     schematic_dotstr = '/*****\nAttack Circuit: Schematic\n*****/\n\ndigraph G {\n  graph [splines=true overlap=false]\n  node  [shape=ellipse, width=0.3, height=0.3]\n' #  size="30,30";\n ratio="fill"
-    impact_dotstr = '/*****\nAttack Circuit: Impact\n*****/\n\ndigraph G {\n  graph [splines=true overlap=false]\n  node  [shape=ellipse, width=0.3, height=0.3]\n' #  size="30,30";\n ratio="fill"
-    exploitability_dotstr = '/*****\nAttack Circuit: Exploitability\n*****/\n\ndigraph G {\n  graph [splines=true overlap=false]\n  node  [shape=ellipse, width=0.3, height=0.3]\n' #  size="30,30";\n ratio="fill"
+    impact_dotstr = '/*****\nAttack Circuit: Impact\n*****/\n\ndigraph G {\n  graph [splines=true overlap=false]\n  node  [shape=ellipse, width=3, height=3]\n' #  size="30,30";\n ratio="fill"
+    exploitability_dotstr = '/*****\nAttack Circuit: Exploitability\n*****/\n\ndigraph G {\n  graph [splines=true overlap=false]\n  node  [shape=ellipse, width=3, height=3]\n' #  size="30,30";\n ratio="fill"
     attack_circuit = {}
     ImpactGraph = nx.DiGraph()
     ExploitabilityGraph = nx.DiGraph()
@@ -90,7 +91,7 @@ def buildCircuit(devices,vector):
     ImpactGraph.add_node("Attacker")
     ExploitabilityGraph.add_node("Attacker")
 
-    with open("descriptions_io.json") as desc:
+    with open("desc-nlp-io.json") as desc:
         io_desc = json.load(desc)
         schematic_dotstr += '  0 -> 1 [label="Some router/network vulnerability"];\n'
         impact_dotstr += '  0 -> 1 [label="Some router/network vulnerability"];\n'
@@ -118,16 +119,29 @@ def buildCircuit(devices,vector):
                 attack_circuit[cve["id"]] = {}
                 attack_circuit[cve["id"]]["inputs"] = []
                 attack_circuit[cve["id"]]["outputs"] = []
-                for io in cve["i/o"]:
-                    attack_circuit[cve["id"]]["inputs"].append(io.split('->')[0])
-                    if cve["description"]!="Non-CVE I/O":
-                        attack_circuit[cve["id"]]["outputs"].append(io.split('->')[1])
-                        if dev_ind!=1 and io.split('->')[1] not in targets:
-                            targets.append(io.split('->')[1])
-                    else:
-                        attack_circuit[cve["id"]]["outputs"].append(io.split('->')[1])
-                        if dev_ind!=1 and io.split('->')[1] not in targets:
-                            targets.append(io.split('->')[1])
+                try:
+                    for io in cve["i/o"]:
+                        attack_circuit[cve["id"]]["inputs"].append(io.split('->')[0])
+                        if cve["description"]!="Non-CVE I/O":
+                            attack_circuit[cve["id"]]["outputs"].append(io.split('->')[1])
+                            if dev_ind!=1 and io.split('->')[1] not in targets:
+                                targets.append(io.split('->')[1])
+                        else:
+                            attack_circuit[cve["id"]]["outputs"].append(io.split('->')[1])
+                            if dev_ind!=1 and io.split('->')[1] not in targets:
+                                targets.append(io.split('->')[1])
+                except:
+                    for io in cve["i/o"]:
+                        attack_circuit[cve["id"]]["inputs"].append(io.split('->')[0])
+                        if cve["description"]!="Non-CVE I/O":
+                            attack_circuit[cve["id"]]["outputs"].append(io.split('->')[1])
+                            if dev_ind!=1 and io.split('->')[1] not in targets:
+                                targets.append(io.split('->')[1])
+                        else:
+                            attack_circuit[cve["id"]]["outputs"].append(io.split('->')[1])
+                            if dev_ind!=1 and io.split('->')[1] not in targets:
+                                targets.append(io.split('->')[1])
+                
                 schematic_dotstr += "    " + str(cve_ind) + ' [label="' + cve["id"] + '"];\n'
                 impact_dotstr += "    " + str(cve_ind) + ' [label="' + cve["id"] + '"];\n'
                 exploitability_dotstr += "    " + str(cve_ind) + ' [label="' + cve["id"] + '"];\n'
@@ -172,7 +186,10 @@ def buildCircuit(devices,vector):
                                     except: # sometimes CVE doesn't have a CVSS score
                                         ImpactGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],capacity=5.0)
                                         if str(cve_dev_x["id"])=="Non-CVE info: Router":
-                                            ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],demand=-1.0,weight=10-vector[cve_dev_y["id"]]["exploitability"])
+                                            try:
+                                                ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],demand=-1.0,weight=10-vector[cve_dev_y["id"]]["exploitability"])
+                                            except:
+                                                continue
                                         else:
                                             ExploitabilityGraph.add_edge(cve_dev_x["id"],cve_dev_y["id"],weight=7.0)
                                             
@@ -202,20 +219,36 @@ def buildCircuit(devices,vector):
 
         for dev_x in devices:
             for cve_dev_x in io_desc[dev_x]:
-                for io in cve_dev_x["i/o"]:
-                    if cve_dev_x["id"]!="Non-CVE info: Router":
-                        ImpactGraph.add_edge(cve_dev_x["id"],io.split('->')[1],capacity=100000.0)
-                        if io.split('->')[1]=="Cookies": # what crown jewel do you want to target?
-                            print("ga")
-                            ExploitabilityGraph.add_edge(cve_dev_x["id"],io.split('->')[1],demand=1.0)
-                        try:
-                            schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
-                            impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
-                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
-                        except: # sometimes CVE doesn't have a CVSS score
-                            schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
-                            impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(5.0) + '"];\n'
-                            exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
+                try:
+                    for io in cve_dev_x["i/o"]+cve_dev_x["nlp i/o"]:
+                        if cve_dev_x["id"]!="Non-CVE info: Router":
+                            ImpactGraph.add_edge(cve_dev_x["id"],io.split('->')[1],capacity=100000.0)
+                            if io.split('->')[1]=="Cookies": # what crown jewel do you want to target?
+                                print("ga")
+                                ExploitabilityGraph.add_edge(cve_dev_x["id"],io.split('->')[1],demand=1.0)
+                            try:
+                                schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
+                                impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
+                                exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
+                            except: # sometimes CVE doesn't have a CVSS score
+                                schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
+                                impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(5.0) + '"];\n'
+                                exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
+                except:
+                    for io in cve_dev_x["i/o"]:
+                        if cve_dev_x["id"]!="Non-CVE info: Router":
+                            ImpactGraph.add_edge(cve_dev_x["id"],io.split('->')[1],capacity=100000.0)
+                            if io.split('->')[1]=="Cookies": # what crown jewel do you want to target?
+                                print("ga")
+                                ExploitabilityGraph.add_edge(cve_dev_x["id"],io.split('->')[1],demand=1.0)
+                            try:
+                                schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
+                                impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(vector[cve_dev_x["id"]]["impact"]) + '"];\n'
+                                exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " -> " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
+                            except: # sometimes CVE doesn't have a CVSS score
+                                schematic_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
+                                impact_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="' + colorVertex(5.0) + '"];\n'
+                                exploitability_dotstr += "  " + str(dotmap[cve_dev_x["id"]]) + " ->  " + str(dotmap[io.split('->')[1]]) + ' [color="black"];\n'
         # for dev_x in devices:
         #     for cve_dev_x in io_desc[dev_x]:
         #         if cve_dev_x["id"]!="Non-CVE info: Router":
@@ -265,30 +298,45 @@ home and edges represent communication. There is a central vertex in each graph 
 to each other edge that represents the router.
 ''' 
 
+# def buildNetwork(devices):
+#     vector = {}
+#     home_network = snap.TUNGraph.New()
+#     labels = snap.TIntStrH()
+#     dev_ind = 0
+#     for device in devices:
+#         dev_ind+=1
+#         home_network.AddNode(dev_ind)
+#         if dev_ind!=1:
+#             home_network.AddEdge(dev_ind, 1)
+#         labels.AddDat(dev_ind, str(device))
+#         vector = buildVector(device,vector)
+#     return home_network, labels, vector
+
 def buildNetwork(devices):
     vector = {}
-    home_network = snap.TUNGraph.New()
-    labels = snap.TIntStrH()
     dev_ind = 0
     for device in devices:
         dev_ind+=1
-        home_network.AddNode(dev_ind)
-        if dev_ind!=1:
-            home_network.AddEdge(dev_ind, 1)
-        labels.AddDat(dev_ind, str(device))
         vector = buildVector(device,vector)
-    return home_network, labels, vector
+    return vector
 
 if __name__ == "__main__":
     timestamp = time.time()
     parser = OptionParser()
     parser.add_option("-d", "--devices", dest="devices",help="input device")
+    parser.add_option("-a", "--all", dest="all",help="all possible devices")
     (options, args) = parser.parse_args()
-    devices = options.devices.split(',')
+    if options.all=="T":
+        with open("descriptions_io.json") as desc:
+            io_desc = json.load(desc)
+            devices = io_desc.keys()
+    else:
+        devices = options.devices.split(',')
 
      ### build ###
 
-    home_network, network_labels, vector = buildNetwork(devices)
+    vector = buildNetwork(devices)
+
     # print(vector)
     paths, SchematicGraph, ImpactGraph, ExploitabilityGraph, edge_labels, schematic_dotstr, impact_dotstr, exploitability_dotstr, targets = buildCircuit(devices,vector)
     print(nx.get_edge_attributes(ExploitabilityGraph,"weight"))
@@ -309,7 +357,7 @@ if __name__ == "__main__":
     print ("Time: " + str(time.time()-timestamp))
     ### save ###
 
-    snap.DrawGViz(home_network, snap.gvlDot, "deliverables/home_network.png", "Home Network", network_labels)
+    # snap.DrawGViz(home_network, snap.gvlDot, "deliverables/home_network.png", "Home Network", network_labels)
     schematic_dotfile = open("deliverables/schematic_circuit.dot", "w")
     schematic_dotfile.write(schematic_dotstr)
     schematic_dotfile.close()
@@ -327,6 +375,7 @@ if __name__ == "__main__":
     (impact_graph,) = pydot.graph_from_dot_file('deliverables/impact_circuit.dot')
     impact_graph.write_png('deliverables/impact_circuit.png')
     (exploitability_graph,) = pydot.graph_from_dot_file('deliverables/exploitability_circuit.dot')
+    print(nx.number_of_nodes(ImpactGraph),nx.number_of_edges(ImpactGraph))
     exploitability_graph.write_png('deliverables/exploitability_circuit.png')
     # nx_node_labels = nx.draw_networkx_labels(G,pos=graphviz_layout(G, prog='dot'))
     # nx_edge_labels = nx.draw_networkx_edge_labels(G,pos=graphviz_layout(G, prog='dot'),edge_labels=edge_labels,font_color='red') 

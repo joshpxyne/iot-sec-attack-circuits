@@ -1,4 +1,7 @@
-# iot-sec-attack-circuits
+# Attack Circuits
+
+This repository implements the techniques introduced in [How Secure Is Your IoT Network?](https://ieeexplore.ieee.org/document/8815678)
+
 Be sure to download the CVE json from years 2013-2019 into a folder called cve-data. Name these 2013.json,...,2019.json.
 
 This repository aims to build attack circuits and home IoT network maps, as well as analyze attack paths and evaluate the security state of the devices and network. 
